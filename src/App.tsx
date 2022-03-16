@@ -4,7 +4,7 @@ import classes from "./App.module.scss";
 import AppContent from "./AppContent";
 import Footer from "./Footer";
 import Header from "./Header";
-
+import FormuleCard from "./FormuleCard";
 const queryClient = new QueryClient();
 
 export default function App() {
