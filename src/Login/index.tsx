@@ -1,16 +1,22 @@
-import { TextField } from "@mui/material";
 import React from "react";
 import { useMutation } from "react-query";
 import { loginApi } from "../services/api";
 import { ApiError, LoginRequestDto } from "../services/api/types";
+import { useForm, Controller } from "react-hook-form";
+import { Input } from "@mui/material";
+
 import ProgressButton, {
   ProgressButtonStatus,
 } from "../common/components/ProgressButton";
 import classes from "./styles.module.scss";
 
+interface IFormInput {
+  email: string;
+  password: string;
+}
+
 export default function Login() {
-  const [email, setEmail] = React.useState("admin@restaurant.com");
-  const [password, setPassword] = React.useState("Password1234.");
+  const { control, handleSubmit, formState:{ errors } } = useForm<IFormInput>();
   const [status, setStatus] = React.useState<ProgressButtonStatus>("idling");
 
   const mutation = useMutation((login: LoginRequestDto) => loginApi(login), {
@@ -31,12 +37,49 @@ export default function Login() {
     },
   });
 
-  function handleClick() {
-    const body = { email, password };
+  function handleClick(data:IFormInput) {
+    const body = { email : data.email, password : data.password};
     setStatus("loading");
     mutation.mutate(body);
   }
 
+
+  return (
+    <form>
+      <Controller
+        render={({ field }) =>
+          <Input  {...field} className="materialUIInput" placeholder="email" />}
+        name="email"
+        control={control}
+        defaultValue="admin@restaurant.com"
+        rules={{ required: true }}
+      />
+      {errors.email && "email is required"}
+      <br/>
+
+      <Controller
+        render={({ field }) =>
+          <Input {...field}  className="materialUIInput" placeholder="password"/>}
+        name="password"
+        control={control}
+        defaultValue="Password1234."
+        rules={{ required: true }}
+      />
+      {errors.password && "Password is required"}
+      <br/>
+
+      <div className={classes.button}>
+        <ProgressButton
+          label="Confirmer"
+          onClick={ handleSubmit(handleClick)}
+          status={status}
+        />
+      </div>
+
+    </form>
+  );
+}
+/*
   return (
     <div className={classes.wrapper}>
       <div className={classes.field}>
@@ -68,3 +111,4 @@ export default function Login() {
     </div>
   );
 }
+*/
