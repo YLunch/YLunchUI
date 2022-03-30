@@ -4,14 +4,20 @@ import classes from "./styles.module.scss";
 export type ProgressButtonStatus = "idling" | "loading" | "success" | "error";
 type Props = {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   status: ProgressButtonStatus;
+  type?: "submit" | "button";
 };
 
-export default function ProgressButton({ label, onClick, status }: Props) {
+export default function ProgressButton({
+  label,
+  onClick,
+  status,
+  type = "button",
+}: Props) {
   return (
     <div className={classes.wrapper}>
-      <Button onClick={onClick} disabled={status === "loading"}>
+      <Button type={type} onClick={onClick} disabled={status === "loading"}>
         {status === "loading" ? "" : label}
       </Button>
       {status === "loading" && (

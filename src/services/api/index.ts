@@ -1,7 +1,12 @@
 import subSeconds from "date-fns/subSeconds";
 import { parse } from "../JwtToken";
 import * as localStorage from "../localStorage";
-import { ApiError, ErrorDto, LoginRequestDto } from "./types";
+import {
+  ApiError,
+  ErrorDto,
+  LoginRequestDto,
+  CustomerCreateDto,
+} from "./types";
 
 // const apiUrl = "http://localhost:5254";
 const apiUrl = "https://ylunch-api.rael-calitro.ovh";
@@ -49,6 +54,20 @@ async function assertSuccess(response: Response) {
 
 export async function loginApi(login: LoginRequestDto): Promise<void> {
   const response = await fetch(`${apiUrl}/authentication/login`, {
+    method: restMethods.post,
+    headers: getAnonymousHeaders(),
+    body: JSON.stringify(login),
+  });
+
+  await assertSuccess(response);
+
+  const TokenReadDto = await response.json();
+  localStorage.setItem("accessToken", TokenReadDto.accessToken);
+  localStorage.setItem("refreshToken", TokenReadDto.refreshToken);
+}
+
+export async function RegisterApi(login: CustomerCreateDto): Promise<void> {
+  const response = await fetch(`${apiUrl}/customers`, {
     method: restMethods.post,
     headers: getAnonymousHeaders(),
     body: JSON.stringify(login),

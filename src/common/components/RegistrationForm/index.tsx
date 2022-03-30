@@ -1,10 +1,14 @@
-import { Button, Typography } from "@mui/material";
+import React from "react";
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useForm, FieldValues } from "react-hook-form";
+import { useMutation } from "react-query";
+import { RegisterApi } from "../../../services/api";
+import { ApiError, CustomerCreateDto } from "../../../services/api/types";
 import FormInput from "../FormInput";
+import ProgressButton, { ProgressButtonStatus } from "../ProgressButton";
 
 interface Inputs extends FieldValues {
-  username: string;
   firstname: string;
   lastname: string;
   phone: string;
@@ -14,17 +18,41 @@ interface Inputs extends FieldValues {
 }
 
 export default function RegistrationForm() {
+  const [status, setStatus] = React.useState<ProgressButtonStatus>("idling");
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<Inputs>({ mode: "onBlur" });
 
+  const mutation = useMutation((data: CustomerCreateDto) => RegisterApi(data), {
+    onSuccess: () => {
+      // Todo redirection based on role
+      setTimeout(() => {
+        setStatus("error");
+      }, 2000);
+    },
+    onError: (error: ApiError) => {
+      // Todo process error
+      setStatus("error");
+    },
+    onSettled: () => {
+      setTimeout(() => {
+        setStatus("idling");
+      }, 500);
+    },
+  });
+
+  const submit = (data: CustomerCreateDto) => {
+    setStatus("loading");
+    mutation.mutate(data);
+  };
+
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", paddingY: 2 }}
       component={"form"}
-      onSubmit={handleSubmit((data) => console.log(data))}
+      onSubmit={handleSubmit((data) => submit(data))}
     >
       <Typography
         variant="caption"
@@ -33,16 +61,6 @@ export default function RegistrationForm() {
       >
         Champ obligatoire*
       </Typography>
-      <FormInput
-        register={register}
-        errors={errors}
-        label="Nom d'utilisateur*"
-        name="username"
-        rules={{
-          required: "This is a required field",
-          minLength: { value: 2, message: "Trop court" },
-        }}
-      />
       <FormInput
         register={register}
         errors={errors}
@@ -66,12 +84,13 @@ export default function RegistrationForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="Téléphone"
+        label="Téléphone*"
         name="phone"
         rules={{
+          required: "This is a required field",
           pattern: {
-            value: /[0-9]{10}/,
-            message: "Votre numero de téléphone est incorrect",
+            value: /^0[6-7][0-9]{8}$/,
+            message: "PhoneNumber is invalid. Example: '0612345678'.",
           },
         }}
       />
@@ -83,8 +102,10 @@ export default function RegistrationForm() {
         rules={{
           required: "This is a required field",
           pattern: {
-            value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-            message: "Votre email doit s'ecrire sous la forme john@doe.fr",
+            value:
+              /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*\.[a-z]{2,20}$/,
+            message:
+              "Email is invalid. It should be lowercase email format. Example: example@example.com.",
           },
         }}
       />
@@ -96,7 +117,12 @@ export default function RegistrationForm() {
         type="password"
         rules={{
           required: "This is a required field",
-          minLength: { value: 8, message: "Trop court" },
+          pattern: {
+            value:
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/,
+            message:
+              "Password is invalid. Must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 special character and 1 number",
+          },
         }}
       />
       <FormInput
@@ -107,12 +133,15 @@ export default function RegistrationForm() {
         type="password"
         rules={{
           required: "This is a required field",
-          minLength: { value: 8, message: "Trop court" },
+          pattern: {
+            value:
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/,
+            message:
+              "Password is invalid. Must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 special character and 1 number",
+          },
         }}
       />
-      <Button sx={{ marginX: "auto" }} variant="contained">
-        Envoyer
-      </Button>
+      <ProgressButton type="submit" label="Envoyer" status={status} />
     </Box>
   );
 }

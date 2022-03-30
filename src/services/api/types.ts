@@ -3,6 +3,14 @@ export type LoginRequestDto = {
   password: string;
 };
 
+export type CustomerCreateDto = {
+  email: string;
+  password: string;
+  lastname: string;
+  firstname: string;
+  phone: string;
+};
+
 export type TokenReadDto = {
   accessToken: string;
   refreshToken: string;
