@@ -1,3 +1,4 @@
+import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useForm, FieldValues } from "react-hook-form";
 import FormInput from "../FormInput";
@@ -21,14 +22,21 @@ export default function RegistrationForm() {
 
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column" }}
+      sx={{ display: "flex", flexDirection: "column", paddingY: 2 }}
       component={"form"}
       onSubmit={handleSubmit((data) => console.log(data))}
     >
+      <Typography
+        variant="caption"
+        sx={{ marginBottom: 2 }}
+        textAlign={"right"}
+      >
+        Champ obligatoire*
+      </Typography>
       <FormInput
         register={register}
         errors={errors}
-        label="Nom d'utilisateur"
+        label="Nom d'utilisateur*"
         name="username"
         rules={{
           required: "This is a required field",
@@ -38,7 +46,7 @@ export default function RegistrationForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="Nom"
+        label="Nom*"
         name="lastname"
         rules={{
           required: "This is a required field",
@@ -48,7 +56,7 @@ export default function RegistrationForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="Prénom"
+        label="Prénom*"
         name="firstname"
         rules={{
           required: "This is a required field",
@@ -70,7 +78,7 @@ export default function RegistrationForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="Adresse mail"
+        label="Adresse mail*"
         name="email"
         rules={{
           required: "This is a required field",
@@ -83,7 +91,7 @@ export default function RegistrationForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="Mot de passe"
+        label="Mot de passe*"
         name="password"
         type="password"
         rules={{
@@ -94,7 +102,7 @@ export default function RegistrationForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="Confirmation du mot de passe"
+        label="Confirmation du mot de passe*"
         name="passwordConfirm"
         type="password"
         rules={{
@@ -102,8 +110,9 @@ export default function RegistrationForm() {
           minLength: { value: 8, message: "Trop court" },
         }}
       />
-
-      <input type="submit" />
+      <Button sx={{ marginX: "auto" }} variant="contained">
+        Envoyer
+      </Button>
     </Box>
   );
 }

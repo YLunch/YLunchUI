@@ -20,15 +20,13 @@ export default function FormInput<T>({
 }: FieldData<T>) {
   return (
     <TextField
-      sx={{
-        marginBottom: 2,
-      }}
       error={!!errors[name]}
       size="small"
       {...register(name, rules)}
       label={label}
-      helperText={errors[name]?.message}
+      helperText={errors[name] ? errors[name]?.message : " "}
       type={type}
+      variant="filled"
     />
   );
 }
