@@ -4,8 +4,8 @@ import * as localStorage from "../localStorage";
 import { getNewTokens } from "./authentication";
 import { ApiError, ErrorDto } from "../../models/Common";
 
-// export const apiUrl = "http://localhost:5254";
-export const apiUrl = "https://ylunch-api.rael-calitro.ovh";
+export const apiUrl = "http://localhost:5254";
+// export const apiUrl = "https://ylunch-api.rael-calitro.ovh";
 
 type RestMethod = "post" | "get" | "patch" | "put" | "delete";
 
