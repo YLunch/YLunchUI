@@ -14,7 +14,7 @@ export default function FormuleCard( name:Formule, description:Formule, price:Fo
                 component="img"
                 alt="icone ynov"
                 height="140"
-                src={image}
+
             />
             <CardContent sx={{ display: 'flex', justifyContent: 'space-between'}}>
                 <Typography gutterBottom variant="subtitle2" component="div">
