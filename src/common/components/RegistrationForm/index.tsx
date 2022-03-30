@@ -3,10 +3,11 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useForm, FieldValues } from "react-hook-form";
 import { useMutation } from "react-query";
-import { RegisterApi } from "../../../services/api";
-import { ApiError, CustomerCreateDto } from "../../../services/api/types";
 import FormInput from "../FormInput";
 import ProgressButton, { ProgressButtonStatus } from "../ProgressButton";
+import { CustomerCreateDto } from "../../../models/Customer";
+import { ApiError } from "../../../models/Common";
+import { RegisterApi } from "../../../services/api/authentication";
 
 interface Inputs extends FieldValues {
   firstname: string;
