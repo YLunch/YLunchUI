@@ -1,7 +1,8 @@
 import React from "react";
 import { useMutation } from "react-query";
 import { loginApi } from "../services/api/authentication";
-import { ApiError, LoginRequestDto } from "../services/api/types/authentication";
+import { ApiError } from "../models/Common";
+import { LoginRequestDto } from "../models/Authentication";
 import { useForm, Controller } from "react-hook-form";
 import {Input, TextField} from "@mui/material";
 import Card from '@mui/material/Card';
@@ -33,8 +34,6 @@ export default function Login() {
     onError: (error: ApiError) => {
       // Todo process error
       setStatus("error");
-      errors.email();
-      errors.password();
     },
     onSettled: () => {
       setTimeout(() => {
