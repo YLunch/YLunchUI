@@ -3,10 +3,11 @@ import { useMutation } from "react-query";
 import { loginApi } from "../services/api";
 import { ApiError, LoginRequestDto } from "../services/api/types";
 import { useForm, Controller } from "react-hook-form";
-import { Input } from "@mui/material";
+import {Input, TextField} from "@mui/material";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import FormControl from '@mui/material/FormControl';
 
 import ProgressButton, {
   ProgressButtonStatus,
@@ -52,10 +53,10 @@ export default function Login() {
       <h1 className={classes.login_title}>Connexion</h1>
       <Card className={classes.card}>
         <CardContent>
-          <form onSubmit={handleSubmit(handleClick)}>
+          <FormControl className={classes.form} onSubmit={handleSubmit(handleClick)} >
             <Controller
               render={({ field }) =>
-                <Input  {...field} className="materialUIInput" placeholder="Email" />}
+                <TextField  {...field} className="materialUIInput" label="Email" variant="filled" />}
               control={control}
               name="email"
               defaultValue="admin@restaurant.com"
@@ -64,21 +65,21 @@ export default function Login() {
             <br></br>
             <Controller
               render={({ field }) =>
-                <Input {...field}  className="materialUIInput" placeholder="Password" style={{ marginTop: "1rem" }}/>}
+                <TextField {...field}  className="materialUIInput" label="Password" variant="filled" style={{ marginTop: "1rem" }}/>}
               control={control}
               name="password"
               defaultValue="Password1234."
 
               rules={{ required: true }}
             />
-              <CardActions>
+              <CardActions style={{ placeContent:"center" }}>
                 <ProgressButton
                   status={status}
                   onClick={handleSubmit(handleClick)}
                   label="Connexion"
                 />
               </CardActions>
-          </form>
+          </FormControl>
         </CardContent>
       </Card>
     </div>
