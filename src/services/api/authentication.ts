@@ -2,9 +2,10 @@ import { LoginRequestDto } from "../../models/Authentication";
 import {
   apiUrl,
   assertSuccess,
-  getAnonymousHeaders,
+  getAnonymousHeaders, getAuthorizedHeaders,
   restMethods,
 } from "./common";
+import {User} from "../../models/Common";
 
 export async function loginApi(login: LoginRequestDto): Promise<void> {
   const response = await fetch(`${apiUrl}/authentication/login`, {
@@ -35,4 +36,13 @@ export async function getNewTokens(): Promise<void> {
   const tokenReadDto = await response.json();
   localStorage.setItem("accessToken", tokenReadDto.accessToken);
   localStorage.setItem("refreshToken", tokenReadDto.refreshToken);
+}
+
+export async function getProfile(): Promise<User> {
+  const response = await fetch(`${apiUrl}/authentication/current-user`, {
+    method: restMethods.get,
+    headers: await getAuthorizedHeaders(),
+  });
+
+  return await response.json() as User;
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation } from "react-query";
-import { loginApi } from "../services/api/authentication";
-import { ApiError } from "../models/Common";
+import {getProfile, loginApi} from "../services/api/authentication";
+import {ApiError, User} from "../models/Common";
 import { LoginRequestDto } from "../models/Authentication";
 import { useForm, Controller } from "react-hook-form";
 import {Input, TextField} from "@mui/material";
@@ -14,6 +14,7 @@ import ProgressButton, {
   ProgressButtonStatus,
 } from "../common/components/ProgressButton";
 import classes from "./styles.module.scss";
+import {Route} from "react-router-dom";
 
 interface IFormInput {
   email: string;
@@ -21,19 +22,44 @@ interface IFormInput {
 }
 
 export default function Login() {
-  const { control, handleSubmit, formState:{ errors } } = useForm<IFormInput>();
+  const { control, handleSubmit, setError, formState:{ errors } } = useForm<IFormInput>();
   const [status, setStatus] = React.useState<ProgressButtonStatus>("idling");
+
+  const regexEmail = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*\.[a-z]{2,20}$/
+  const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/
 
   const mutation = useMutation((login: LoginRequestDto) => loginApi(login), {
     onSuccess: () => {
       // Todo redirection based on role
-      setTimeout(() => {
-        setStatus("error");
-      }, 2000);
+      console.log("Success");
+
+      getProfile().then(user => {
+        console.log(user);
+
+        for( let role of user.roles){
+          if(role === "RestaurantAdmin"){
+            //<Route path="/restaurant-" element={Restaurant} />
+          }
+        }
+
+
+      });
     },
     onError: (error: ApiError) => {
       // Todo process error
       setStatus("error");
+
+      console.log(error);
+      setError("email",{
+        type: "manual",
+        message: error.message
+      });
+
+      setError("password",{
+        type:"manual",
+        message: error.message
+      });
+
     },
     onSettled: () => {
       setTimeout(() => {
@@ -48,7 +74,6 @@ export default function Login() {
     mutation.mutate(body);
   }
 
-
   return (
     <div className={classes.login}>
       <h1 className={classes.login_title}>Connexion</h1>
@@ -60,26 +85,25 @@ export default function Login() {
                 <TextField  {...field} className="materialUIInput"
                             label="Email" variant="filled"
                             error={errors.email ? true : false}
-                            helperText={errors.email ? 'Error email' : ''} />}
+                            helperText={errors.email ? (errors.email.message ? errors.email.message : "Mauvaise saisie de l'email" ) : ' '} />}
               control={control}
               name="email"
               defaultValue="admin@restaurant.com"
-              rules={{ required: true }}
-            />
+              rules={{ required: true, pattern: regexEmail    }} />
             <Controller
               render={({ field }) =>
                 <TextField {...field}  className="materialUIInput"
                            label="Password" variant="filled"
                            error={errors.password ? true : false}
-                           helperText={errors.password ? ' Error Password !' : ' '}
+                           helperText={errors.password ? (errors.password.message ? errors.password.message : "Mauvaise saisie du  password" ) : ' '}
                            style={{ marginTop: "2rem" }}/>}
 
               control={control}
               name="password"
               defaultValue="Password1234."
-
-              rules={{ required: true }}
+              rules={{ required: true, pattern: regexPassword }}
             />
+
               <CardActions style={{ placeContent:"center" }}>
                 <ProgressButton
                   status={status}

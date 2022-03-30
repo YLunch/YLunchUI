@@ -13,3 +13,12 @@ export interface ApiError extends Error {
   status: number;
   errors: Record<string | "reasons", string[]>;
 }
+
+export type User = {
+  email: string;
+  phoneNumber: string;
+  firstname: string;
+  lastname: string;
+  roles: string[];
+  id: string;
+}
