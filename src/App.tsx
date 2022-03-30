@@ -2,9 +2,10 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 import classes from "./App.module.scss";
 import AppContent from "./AppContent";
+import RestaurantsList from "./RestaurantsList";
 import Footer from "./Footer";
 import Header from "./Header";
-import FormuleCard from "./FormuleCard";
+import FormuleCard from "./FormuleList/FormuleCard";
 const queryClient = new QueryClient();
 
 export default function App() {
@@ -14,6 +15,8 @@ export default function App() {
         <BrowserRouter>
           <Header />
           <AppContent />
+
+<FormuleCard/>
           <Footer />
         </BrowserRouter>
       </div>
