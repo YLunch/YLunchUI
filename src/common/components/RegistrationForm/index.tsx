@@ -12,7 +12,7 @@ import { RegisterApi } from "../../../services/api/authentication";
 interface Inputs extends FieldValues {
   firstname: string;
   lastname: string;
-  phone: string;
+  phoneNumber: string;
   email: string;
   password: string;
   passwordConfirm: string;
@@ -86,7 +86,7 @@ export default function RegistrationForm() {
         register={register}
         errors={errors}
         label="Téléphone*"
-        name="phone"
+        name="phoneNumber"
         rules={{
           required: "This is a required field",
           pattern: {

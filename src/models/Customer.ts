@@ -3,5 +3,5 @@ export type CustomerCreateDto = {
   password: string;
   lastname: string;
   firstname: string;
-  phone: string;
+  phoneNumber: string;
 };
