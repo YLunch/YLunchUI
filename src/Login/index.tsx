@@ -4,6 +4,9 @@ import { loginApi } from "../services/api";
 import { ApiError, LoginRequestDto } from "../services/api/types";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "@mui/material";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 import ProgressButton, {
   ProgressButtonStatus,
@@ -45,70 +48,39 @@ export default function Login() {
 
 
   return (
-    <form>
-      <Controller
-        render={({ field }) =>
-          <Input  {...field} className="materialUIInput" placeholder="email" />}
-        name="email"
-        control={control}
-        defaultValue="admin@restaurant.com"
-        rules={{ required: true }}
-      />
-      {errors.email && "email is required"}
-      <br/>
+    <div className={classes.login}>
+      <h1 className={classes.login_title}>Connexion</h1>
+      <Card className={classes.card}>
+        <CardContent>
+          <form onSubmit={handleSubmit(handleClick)}>
+            <Controller
+              render={({ field }) =>
+                <Input  {...field} className="materialUIInput" placeholder="Email" />}
+              control={control}
+              name="email"
+              defaultValue="admin@restaurant.com"
+              rules={{ required: true }}
+            />
+            <br></br>
+            <Controller
+              render={({ field }) =>
+                <Input {...field}  className="materialUIInput" placeholder="Password" style={{ marginTop: "1rem" }}/>}
+              control={control}
+              name="password"
+              defaultValue="Password1234."
 
-      <Controller
-        render={({ field }) =>
-          <Input {...field}  className="materialUIInput" placeholder="password"/>}
-        name="password"
-        control={control}
-        defaultValue="Password1234."
-        rules={{ required: true }}
-      />
-      {errors.password && "Password is required"}
-      <br/>
-
-      <div className={classes.button}>
-        <ProgressButton
-          label="Confirmer"
-          onClick={ handleSubmit(handleClick)}
-          status={status}
-        />
-      </div>
-
-    </form>
-  );
-}
-/*
-  return (
-    <div className={classes.wrapper}>
-      <div className={classes.field}>
-        <TextField
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          label="Email"
-        />
-      </div>
-
-      <div className={classes.field}>
-        <TextField
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          label="Mot de passe"
-          type="password"
-        />
-      </div>
-
-      <div className={classes.button}>
-        <ProgressButton
-          label="Confirmer"
-          onClick={handleClick}
-          status={status}
-        />
-      </div>
+              rules={{ required: true }}
+            />
+              <CardActions>
+                <ProgressButton
+                  status={status}
+                  onClick={handleSubmit(handleClick)}
+                  label="Connexion"
+                />
+              </CardActions>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
-*/
