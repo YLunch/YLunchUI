@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation } from "react-query";
-import { loginApi } from "../services/api";
-import { ApiError, LoginRequestDto } from "../services/api/types";
+import { loginApi } from "../services/api/authentication";
+import { ApiError, LoginRequestDto } from "../services/api/types/authentication";
 import { useForm, Controller } from "react-hook-form";
 import {Input, TextField} from "@mui/material";
 import Card from '@mui/material/Card';
