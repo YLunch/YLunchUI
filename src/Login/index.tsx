@@ -33,6 +33,8 @@ export default function Login() {
     onError: (error: ApiError) => {
       // Todo process error
       setStatus("error");
+      errors.email();
+      errors.password();
     },
     onSettled: () => {
       setTimeout(() => {
@@ -56,16 +58,23 @@ export default function Login() {
           <FormControl className={classes.form} onSubmit={handleSubmit(handleClick)} >
             <Controller
               render={({ field }) =>
-                <TextField  {...field} className="materialUIInput" label="Email" variant="filled" />}
+                <TextField  {...field} className="materialUIInput"
+                            label="Email" variant="filled"
+                            error={errors.email ? true : false}
+                            helperText={errors.email ? 'Error email' : ''} />}
               control={control}
               name="email"
               defaultValue="admin@restaurant.com"
               rules={{ required: true }}
             />
-            <br></br>
             <Controller
               render={({ field }) =>
-                <TextField {...field}  className="materialUIInput" label="Password" variant="filled" style={{ marginTop: "1rem" }}/>}
+                <TextField {...field}  className="materialUIInput"
+                           label="Password" variant="filled"
+                           error={errors.password ? true : false}
+                           helperText={errors.password ? ' Error Password !' : ' '}
+                           style={{ marginTop: "2rem" }}/>}
+
               control={control}
               name="password"
               defaultValue="Password1234."
