@@ -8,6 +8,8 @@ import ProgressButton, { ProgressButtonStatus } from "../ProgressButton";
 import { CustomerCreateDto } from "../../../models/Customer";
 import { ApiError } from "../../../models/Common";
 import { RegisterApi } from "../../../services/api/authentication";
+import { REGEX } from "../../../constants/regex";
+import { useNavigate } from "react-router-dom";
 
 interface Inputs extends FieldValues {
   firstname: string;
@@ -19,28 +21,28 @@ interface Inputs extends FieldValues {
 }
 
 export default function RegistrationForm() {
+  const navigate = useNavigate();
   const [status, setStatus] = React.useState<ProgressButtonStatus>("idling");
   const {
     register,
     formState: { errors },
     handleSubmit,
+    getValues,
   } = useForm<Inputs>({ mode: "onBlur" });
 
   const mutation = useMutation((data: CustomerCreateDto) => RegisterApi(data), {
     onSuccess: () => {
-      // Todo redirection based on role
-      setTimeout(() => {
-        setStatus("error");
-      }, 2000);
+      navigate("/login", {
+        state: {
+          message: "Un email de confirmation vous a été envoyé",
+        },
+      });
     },
     onError: (error: ApiError) => {
-      // Todo process error
       setStatus("error");
     },
     onSettled: () => {
-      setTimeout(() => {
-        setStatus("idling");
-      }, 500);
+      setStatus("idling");
     },
   });
 
@@ -68,8 +70,12 @@ export default function RegistrationForm() {
         label="Nom*"
         name="lastname"
         rules={{
-          required: "This is a required field",
-          minLength: { value: 2, message: "Trop court" },
+          required: "Ce champs est requis",
+          pattern: {
+            value: REGEX.name,
+            message:
+              "Votre nom ne doit contenir que des caractères alphabétiques. Exemple : Dupont",
+          },
         }}
       />
       <FormInput
@@ -78,8 +84,12 @@ export default function RegistrationForm() {
         label="Prénom*"
         name="firstname"
         rules={{
-          required: "This is a required field",
-          minLength: { value: 2, message: "Trop court" },
+          required: "Ce champs est requis",
+          pattern: {
+            value: REGEX.name,
+            message:
+              "Votre prénom ne doit contenir que des caractères alphabétiques. Exemple : Henri",
+          },
         }}
       />
       <FormInput
@@ -88,10 +98,11 @@ export default function RegistrationForm() {
         label="Téléphone*"
         name="phoneNumber"
         rules={{
-          required: "This is a required field",
+          required: "Ce champs est requis",
           pattern: {
-            value: /^0[6-7][0-9]{8}$/,
-            message: "PhoneNumber is invalid. Example: '0612345678'.",
+            value: REGEX.phoneNumber,
+            message:
+              "Le numero de téléphone doit respecter le format : '0612345678'.",
           },
         }}
       />
@@ -101,12 +112,11 @@ export default function RegistrationForm() {
         label="Adresse mail*"
         name="email"
         rules={{
-          required: "This is a required field",
+          required: "Ce champs est requis",
           pattern: {
-            value:
-              /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*\.[a-z]{2,20}$/,
+            value: REGEX.emailYnov,
             message:
-              "Email is invalid. It should be lowercase email format. Example: example@example.com.",
+              "Votre email de respecter le format : prenom.nom@ynov.com.",
           },
         }}
       />
@@ -117,12 +127,11 @@ export default function RegistrationForm() {
         name="password"
         type="password"
         rules={{
-          required: "This is a required field",
+          required: "Ce champs est requis",
           pattern: {
-            value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/,
+            value: REGEX.password,
             message:
-              "Password is invalid. Must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 special character and 1 number",
+              "Votre mot de passe doit contenir au moins 8 caractères, 1 lettre miniscule, 1 lettre majuscule, 1 caractère spécial et 1 chiffre",
           },
         }}
       />
@@ -133,12 +142,11 @@ export default function RegistrationForm() {
         name="passwordConfirm"
         type="password"
         rules={{
-          required: "This is a required field",
-          pattern: {
-            value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/,
-            message:
-              "Password is invalid. Must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 special character and 1 number",
+          required: "Ce champs est requis",
+          validate: {
+            match: (value: any) =>
+              value === getValues().password ||
+              "Les mots doivent être identiques",
           },
         }}
       />
