@@ -1,16 +1,13 @@
-import React from "react";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useForm, FieldValues } from "react-hook-form";
+import React from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import FormInput from "../../../../common/components/FormInput";
 import ProgressButton, {
   ProgressButtonStatus,
 } from "../../../../common/components/ProgressButton";
-import { CustomerCreateDto } from "../../../../models/Customer";
-import { ApiError } from "../../../../models/Common";
-import { RegisterApi } from "../../../../services/api/authentication";
-import { useNavigate } from "react-router-dom";
 import {
   firstOrLastNameRegExp,
   passwordRegExp,
@@ -18,6 +15,9 @@ import {
   ynovEmailRegExp,
 } from "../../../../constants/regexps";
 import { progressButtonRecoveryTimeout } from "../../../../constants/timeouts";
+import { ApiError } from "../../../../models/Common";
+import { CustomerCreateDto } from "../../../../models/Customer";
+import { RegisterApi } from "../../../../services/api/authentication";
 
 interface Inputs extends FieldValues {
   firstname: string;
@@ -40,16 +40,18 @@ export default function RegistrationForm() {
 
   const mutation = useMutation((data: CustomerCreateDto) => RegisterApi(data), {
     onSuccess: () => {
-      navigate("/customer/login", {
-        state: {
-          message: "Un email de confirmation vous a été envoyé",
-        },
-      });
+      setStatus("success");
+      setTimeout(() => {
+        setStatus("idling");
+        navigate("/customer/login", {
+          state: {
+            message: "Un email de confirmation vous a été envoyé",
+          },
+        });
+      }, progressButtonRecoveryTimeout);
     },
     onError: (_: ApiError) => {
       setStatus("error");
-    },
-    onSettled: () => {
       setTimeout(() => {
         setStatus("idling");
       }, progressButtonRecoveryTimeout);
@@ -79,6 +81,7 @@ export default function RegistrationForm() {
         errors={errors}
         label="Nom*"
         name="lastname"
+        initialValue="lastname"
         rules={{
           required: "Ce champs est requis",
           pattern: {
@@ -93,6 +96,7 @@ export default function RegistrationForm() {
         errors={errors}
         label="Prénom*"
         name="firstname"
+        initialValue="firstname"
         rules={{
           required: "Ce champs est requis",
           pattern: {
@@ -107,6 +111,7 @@ export default function RegistrationForm() {
         errors={errors}
         label="Téléphone*"
         name="phoneNumber"
+        initialValue="0623015217"
         rules={{
           required: "Ce champs est requis",
           pattern: {
@@ -121,6 +126,7 @@ export default function RegistrationForm() {
         errors={errors}
         label="Adresse mail*"
         name="email"
+        initialValue="firstname.lastname@ynov.com"
         rules={{
           required: "Ce champs est requis",
           pattern: {
@@ -135,6 +141,7 @@ export default function RegistrationForm() {
         label="Mot de passe*"
         name="password"
         type="password"
+        initialValue={"Password1234."}
         rules={{
           required: "Ce champs est requis",
           pattern: {
@@ -150,6 +157,7 @@ export default function RegistrationForm() {
         label="Confirmation du mot de passe*"
         name="passwordConfirm"
         type="password"
+        initialValue={"Password1234."}
         rules={{
           required: "Ce champs est requis",
           validate: {

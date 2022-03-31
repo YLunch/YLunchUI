@@ -8,6 +8,7 @@ type FieldData<T extends FieldValues> = {
   register: UseFormRegister<T>;
   errors: FieldValues;
   type?: string;
+  initialValue?: unknown;
 };
 
 export default function FormInput<T extends FieldValues>({
@@ -17,6 +18,7 @@ export default function FormInput<T extends FieldValues>({
   register,
   errors,
   type = "text",
+  initialValue = "",
 }: FieldData<T>) {
   return (
     <TextField
@@ -27,6 +29,7 @@ export default function FormInput<T extends FieldValues>({
       helperText={errors[name] ? errors[name]?.message : " "}
       type={type}
       variant="filled"
+      defaultValue={initialValue}
     />
   );
 }
