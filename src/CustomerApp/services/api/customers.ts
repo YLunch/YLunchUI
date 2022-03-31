@@ -1,17 +1,18 @@
-import { CustomerCreateDto } from "../../models/Customer";
+import { UserReadDto } from "../../../common/models/Authentication";
 import {
   apiUrl,
-  restMethods,
   getAnonymousHeaders,
-  assertSuccess,
-} from "../../../common/services/api/common";
+  processResponse,
+  restMethods,
+} from "../../../common/services/api/helpers";
+import { CustomerCreateDto } from "../../models/Customer";
 
-export async function addCustomerApi(login: CustomerCreateDto): Promise<void> {
-  const response = await fetch(`${apiUrl}/customers`, {
+export async function addCustomerApi(
+  login: CustomerCreateDto
+): Promise<UserReadDto> {
+  return fetch(`${apiUrl}/customers`, {
     method: restMethods.post,
     headers: getAnonymousHeaders(),
     body: JSON.stringify(login),
-  });
-
-  await assertSuccess(response);
+  }).then(async (response) => await processResponse(response));
 }

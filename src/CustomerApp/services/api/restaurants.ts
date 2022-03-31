@@ -3,12 +3,12 @@ import {
   apiUrl,
   restMethods,
   getAnonymousHeaders,
-} from "../../../common/services/api/common";
+  processResponse,
+} from "../../../common/services/api/helpers";
 
 export async function getRestaurants(): Promise<RestaurantReadDto[]> {
-  const response = await fetch(`${apiUrl}/restaurants`, {
+  return fetch(`${apiUrl}/restaurants`, {
     method: restMethods.get,
     headers: getAnonymousHeaders(),
-  });
-  return response.json();
+  }).then(async (response) => await processResponse(response));
 }

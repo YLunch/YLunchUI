@@ -1,5 +1,5 @@
 import subSeconds from "date-fns/subSeconds";
-import { ApiError, ErrorDto } from "../../models/Common";
+import { ApiError } from "../../models/Common";
 import { parse } from "../JwtToken";
 import { getLocalStorageItem } from "../localStorage";
 import { getNewTokens } from "./authentication";
@@ -38,12 +38,11 @@ export async function getAuthorizedHeaders() {
   return headers;
 }
 
-export async function assertSuccess(response: Response) {
-  if (response.status < 400) {
-    return;
+export async function processResponse<T>(response: Response) {
+  const data = await response.json();
+  if (response.ok) {
+    return data as T;
   }
-  const errorDto = (await response.json()) as ErrorDto;
-  const { title, status, errors } = errorDto;
-  const error = { message: title, title, status, errors } as ApiError;
+  const error = data as ApiError;
   throw error;
 }

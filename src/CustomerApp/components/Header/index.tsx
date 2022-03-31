@@ -7,12 +7,20 @@ import classes from "./styles.module.scss";
 import logo from "./ylunch-logo.png";
 import React from "react";
 import { getCurrentUserApi } from "../../../common/services/api/authentication";
+import { getLocalStorageItem } from "../../../common/services/localStorage";
 
 export default function Header() {
   const { currentUser, setCurrentUser } = useCurrentUser();
 
   React.useEffect(() => {
-    getCurrentUserApi().then((res) => setCurrentUser(res));
+    if (
+      getLocalStorageItem("accessToken") &&
+      getLocalStorageItem("refreshToken")
+    ) {
+      getCurrentUserApi().then((res) => {
+        setCurrentUser(res);
+      });
+    }
   }, [setCurrentUser]);
 
   return (
