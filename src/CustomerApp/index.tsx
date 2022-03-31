@@ -2,7 +2,6 @@ import { Container } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import Registration from "./components/Registration";
 import Restaurants from "./components/Restaurants";
-import classes from "./styles.module.scss";
 
 export default function CustomerApp() {
   return (

@@ -8,8 +8,13 @@ import ProgressButton, { ProgressButtonStatus } from "../ProgressButton";
 import { CustomerCreateDto } from "../../../models/Customer";
 import { ApiError } from "../../../models/Common";
 import { RegisterApi } from "../../../services/api/authentication";
-import { REGEX } from "../../../constants/regex";
 import { useNavigate } from "react-router-dom";
+import {
+  firstOrLastNameRegExp,
+  passwordRegExp,
+  phoneNumberRegExp,
+  ynovEmailRegExp,
+} from "../../../constants/regex";
 
 interface Inputs extends FieldValues {
   firstname: string;
@@ -38,11 +43,13 @@ export default function RegistrationForm() {
         },
       });
     },
-    onError: (error: ApiError) => {
+    onError: (_: ApiError) => {
       setStatus("error");
     },
     onSettled: () => {
-      setStatus("idling");
+      setTimeout(() => {
+        setStatus("idling");
+      }, 2000);
     },
   });
 
@@ -72,7 +79,7 @@ export default function RegistrationForm() {
         rules={{
           required: "Ce champs est requis",
           pattern: {
-            value: REGEX.name,
+            value: firstOrLastNameRegExp,
             message:
               "Votre nom ne doit contenir que des caractères alphabétiques. Exemple : Dupont",
           },
@@ -86,7 +93,7 @@ export default function RegistrationForm() {
         rules={{
           required: "Ce champs est requis",
           pattern: {
-            value: REGEX.name,
+            value: firstOrLastNameRegExp,
             message:
               "Votre prénom ne doit contenir que des caractères alphabétiques. Exemple : Henri",
           },
@@ -100,9 +107,9 @@ export default function RegistrationForm() {
         rules={{
           required: "Ce champs est requis",
           pattern: {
-            value: REGEX.phoneNumber,
+            value: phoneNumberRegExp,
             message:
-              "Le numero de téléphone doit respecter le format : '0612345678'.",
+              "Le numero de téléphone doit respecter le format : '0612345678'",
           },
         }}
       />
@@ -114,9 +121,8 @@ export default function RegistrationForm() {
         rules={{
           required: "Ce champs est requis",
           pattern: {
-            value: REGEX.emailYnov,
-            message:
-              "Votre email de respecter le format : prenom.nom@ynov.com.",
+            value: ynovEmailRegExp,
+            message: "Votre email de respecter le format : prenom.nom@ynov.com",
           },
         }}
       />
@@ -129,7 +135,7 @@ export default function RegistrationForm() {
         rules={{
           required: "Ce champs est requis",
           pattern: {
-            value: REGEX.password,
+            value: passwordRegExp,
             message:
               "Votre mot de passe doit contenir au moins 8 caractères, 1 lettre miniscule, 1 lettre majuscule, 1 caractère spécial et 1 chiffre",
           },

@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
-import classes from "./App.module.scss";
 import AppContent from "./AppContent";
 import Footer from "./Footer";
 import Header from "./Header";
