@@ -1,15 +1,16 @@
-import { Container } from "@mui/material";
-import { Route, Routes } from "react-router-dom";
-import Registration from "./components/Registration";
-import Restaurants from "./components/Restaurants";
+import Body from "./components/Body";
+import Footer from "../Footer";
+import Header from "./components/Header";
+import classes from "./styles.module.scss";
 
 export default function CustomerApp() {
   return (
-    <Container maxWidth="lg">
-      <Routes>
-        <Route path="" element={<Restaurants />} />
-        <Route path="registration" element={<Registration />} />
-      </Routes>
-    </Container>
+    <div className={classes.wrapper}>
+      <Header />
+      <div className={classes.body}>
+        <Body />
+      </div>
+      <Footer />
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import { Typography, Card, CardContent, Container } from "@mui/material";
-import RegistrationForm from "../../../common/components/RegistrationForm";
+import RegistrationForm from "./RegistrationForm";
 
 export default function Registration() {
   return (

@@ -3,18 +3,21 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useForm, FieldValues } from "react-hook-form";
 import { useMutation } from "react-query";
-import FormInput from "../FormInput";
-import ProgressButton, { ProgressButtonStatus } from "../ProgressButton";
-import { CustomerCreateDto } from "../../../models/Customer";
-import { ApiError } from "../../../models/Common";
-import { RegisterApi } from "../../../services/api/authentication";
+import FormInput from "../../../../common/components/FormInput";
+import ProgressButton, {
+  ProgressButtonStatus,
+} from "../../../../common/components/ProgressButton";
+import { CustomerCreateDto } from "../../../../models/Customer";
+import { ApiError } from "../../../../models/Common";
+import { RegisterApi } from "../../../../services/api/authentication";
 import { useNavigate } from "react-router-dom";
 import {
   firstOrLastNameRegExp,
   passwordRegExp,
   phoneNumberRegExp,
   ynovEmailRegExp,
-} from "../../../constants/regex";
+} from "../../../../constants/regexps";
+import { progressButtonRecoveryTimeout } from "../../../../constants/timeouts";
 
 interface Inputs extends FieldValues {
   firstname: string;
@@ -37,7 +40,7 @@ export default function RegistrationForm() {
 
   const mutation = useMutation((data: CustomerCreateDto) => RegisterApi(data), {
     onSuccess: () => {
-      navigate("/login", {
+      navigate("/customer/login", {
         state: {
           message: "Un email de confirmation vous a été envoyé",
         },
@@ -49,7 +52,7 @@ export default function RegistrationForm() {
     onSettled: () => {
       setTimeout(() => {
         setStatus("idling");
-      }, 2000);
+      }, progressButtonRecoveryTimeout);
     },
   });
 

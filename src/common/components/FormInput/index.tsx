@@ -10,7 +10,7 @@ type FieldData<T extends FieldValues> = {
   type?: string;
 };
 
-export default function FormInput<T>({
+export default function FormInput<T extends FieldValues>({
   label,
   name,
   rules,
