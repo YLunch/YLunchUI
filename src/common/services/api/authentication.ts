@@ -1,12 +1,12 @@
-import { LoginRequestDto } from "../../models/Authentication";
-import { CustomerCreateDto } from "../../models/Customer";
+import { LoginRequestDto, UserReadDto } from "../../models/Authentication";
+
 import {
   apiUrl,
   assertSuccess,
-  getAnonymousHeaders, getAuthorizedHeaders,
+  getAnonymousHeaders,
+  getAuthorizedHeaders,
   restMethods,
 } from "./common";
-import {User} from "../../models/Common";
 
 export async function loginApi(login: LoginRequestDto): Promise<void> {
   const response = await fetch(`${apiUrl}/authentication/login`, {
@@ -20,16 +20,6 @@ export async function loginApi(login: LoginRequestDto): Promise<void> {
   const TokenReadDto = await response.json();
   localStorage.setItem("accessToken", TokenReadDto.accessToken);
   localStorage.setItem("refreshToken", TokenReadDto.refreshToken);
-}
-
-export async function RegisterApi(login: CustomerCreateDto): Promise<void> {
-  const response = await fetch(`${apiUrl}/customers`, {
-    method: restMethods.post,
-    headers: getAnonymousHeaders(),
-    body: JSON.stringify(login),
-  });
-
-  await assertSuccess(response);
 }
 
 export async function getNewTokens(): Promise<void> {
@@ -49,11 +39,11 @@ export async function getNewTokens(): Promise<void> {
   localStorage.setItem("refreshToken", tokenReadDto.refreshToken);
 }
 
-export async function getProfile(): Promise<User> {
+export async function getCurrentUserApi(): Promise<UserReadDto> {
   const response = await fetch(`${apiUrl}/authentication/current-user`, {
     method: restMethods.get,
     headers: await getAuthorizedHeaders(),
   });
 
-  return await response.json() as User;
+  return (await response.json()) as UserReadDto;
 }
