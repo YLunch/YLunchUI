@@ -1,8 +1,8 @@
 import subSeconds from "date-fns/subSeconds";
-import { parse } from "../JwtToken";
-import * as localStorage from "../localStorage";
-import { getNewTokens } from "./authentication";
 import { ApiError, ErrorDto } from "../../models/Common";
+import { parse } from "../JwtToken";
+import { getLocalStorageItem } from "../localStorage";
+import { getNewTokens } from "./authentication";
 
 // export const apiUrl = "http://localhost:5254";
 export const apiUrl = "https://ylunch-api.rael-calitro.ovh";
@@ -25,13 +25,13 @@ export function getAnonymousHeaders() {
 
 export async function getAuthorizedHeaders() {
   const headers = getAnonymousHeaders();
-  let accessToken = localStorage.getItem("accessToken");
+  let accessToken = getLocalStorageItem("accessToken");
   if (!accessToken) return headers;
 
   const accessTokenData = parse(accessToken);
   if (accessTokenData.exp < subSeconds(new Date(), 30).getTime()) {
     await getNewTokens();
-    accessToken = localStorage.getItem("accessToken");
+    accessToken = getLocalStorageItem("accessToken");
   }
 
   headers.set("Authorization", `Bearer ${accessToken}`);

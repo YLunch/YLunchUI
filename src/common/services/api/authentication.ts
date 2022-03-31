@@ -1,4 +1,5 @@
 import { LoginRequestDto, UserReadDto } from "../../models/Authentication";
+import { removeLocalStorageItem, setLocalStorageItem } from "../localStorage";
 
 import {
   apiUrl,
@@ -14,12 +15,16 @@ export async function loginApi(login: LoginRequestDto): Promise<void> {
     headers: getAnonymousHeaders(),
     body: JSON.stringify(login),
   });
+  if (response.status >= 400) {
+    removeLocalStorageItem("accessToken");
+    removeLocalStorageItem("refreshToken");
+  }
 
   await assertSuccess(response);
 
   const TokenReadDto = await response.json();
-  localStorage.setItem("accessToken", TokenReadDto.accessToken);
-  localStorage.setItem("refreshToken", TokenReadDto.refreshToken);
+  setLocalStorageItem("accessToken", TokenReadDto.accessToken);
+  setLocalStorageItem("refreshToken", TokenReadDto.refreshToken);
 }
 
 export async function getNewTokens(): Promise<void> {
@@ -35,8 +40,8 @@ export async function getNewTokens(): Promise<void> {
   await assertSuccess(response);
 
   const tokenReadDto = await response.json();
-  localStorage.setItem("accessToken", tokenReadDto.accessToken);
-  localStorage.setItem("refreshToken", tokenReadDto.refreshToken);
+  setLocalStorageItem("accessToken", tokenReadDto.accessToken);
+  setLocalStorageItem("refreshToken", tokenReadDto.refreshToken);
 }
 
 export async function getCurrentUserApi(): Promise<UserReadDto> {
@@ -44,6 +49,8 @@ export async function getCurrentUserApi(): Promise<UserReadDto> {
     method: restMethods.get,
     headers: await getAuthorizedHeaders(),
   });
+
+  assertSuccess(response);
 
   return (await response.json()) as UserReadDto;
 }

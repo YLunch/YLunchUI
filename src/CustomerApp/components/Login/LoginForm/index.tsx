@@ -10,6 +10,7 @@ import ProgressButton, {
 } from "../../../../common/components/ProgressButton";
 import { ynovEmailRegExp } from "../../../../common/constants/regexps";
 import { progressButtonRecoveryTimeout } from "../../../../common/constants/timeouts";
+import useCurrentUser from "../../../../common/hooks/useCurrentUser";
 import { LoginRequestDto } from "../../../../common/models/Authentication";
 import { ApiError } from "../../../../common/models/Common";
 import {
@@ -30,18 +31,19 @@ export default function LoginForm() {
     formState: { errors },
     handleSubmit,
   } = useForm<Inputs>({ mode: "onBlur" });
+  const { setCurrentUser } = useCurrentUser();
 
   const mutation = useMutation((data: LoginRequestDto) => loginApi(data), {
     onSuccess: async () => {
+      setCurrentUser(await getCurrentUserApi());
       setStatus("success");
       setTimeout(async () => {
-        // todo put user in customerApp context so the header could benefit of it
-        const user = await getCurrentUserApi();
         setStatus("idling");
         navigate("/customer/");
       }, progressButtonRecoveryTimeout);
     },
     onError: (_: ApiError) => {
+      setCurrentUser(undefined);
       setStatus("error");
       setTimeout(() => {
         setStatus("idling");
