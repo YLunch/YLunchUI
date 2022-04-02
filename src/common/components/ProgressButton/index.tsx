@@ -8,7 +8,6 @@ type Props = {
   onClick?: () => void;
   status: ProgressButtonStatus;
   type?: "submit" | "button";
-  errorMessages?: string[];
 };
 
 const colors: Record<
@@ -26,7 +25,6 @@ export default function ProgressButton({
   onClick,
   status,
   type = "button",
-  errorMessages,
 }: Props) {
   return (
     <div className={classes.wrapper}>
@@ -67,7 +65,6 @@ export default function ProgressButton({
           }}
         />
       )}
-      {errorMessages && errorMessages.join("\n")}
     </div>
   );
 }

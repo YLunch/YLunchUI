@@ -191,12 +191,10 @@ export default function RegistrationForm() {
           },
         }}
       />
-      <ProgressButton
-        type="submit"
-        label="Envoyer"
-        status={status}
-        errorMessages={apiErrors}
-      />
+      <ProgressButton type="submit" label="Envoyer" status={status} />
+      {apiErrors && (
+        <Typography color="error">{apiErrors.join("\n")}</Typography>
+      )}
     </Box>
   );
 }
