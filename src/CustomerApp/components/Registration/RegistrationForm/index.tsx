@@ -15,7 +15,11 @@ import {
   ynovEmailRegExp,
 } from "../../../../common/constants/regexps";
 import { progressButtonRecoveryTimeout } from "../../../../common/constants/timeouts";
-import { ApiError } from "../../../../common/models/Common";
+import {
+  ApiError,
+  isApiStandardError,
+  isApiValidationError,
+} from "../../../../common/models/Common";
 import { CustomerCreateDto } from "../../../models/Customer";
 import { addCustomerApi } from "../../../services/api/customers";
 
@@ -31,6 +35,7 @@ interface Inputs extends FieldValues {
 export default function RegistrationForm() {
   const navigate = useNavigate();
   const [status, setStatus] = React.useState<ProgressButtonStatus>("idling");
+  const [apiErrors, setApiErrors] = React.useState<string[]>([]);
   const {
     register,
     formState: { errors },
@@ -53,8 +58,15 @@ export default function RegistrationForm() {
           });
         }, progressButtonRecoveryTimeout);
       },
-      onError: (error: ApiError) => {
-        alert(error.errors.reasons.join("\n"));
+      onError: (error: ApiError<CustomerCreateDto>) => {
+        if (isApiValidationError(error)) {
+          setApiErrors(
+            Object.entries(error.errors).map(([_, value]) => String(value))
+          );
+        }
+        if (isApiStandardError(error)) {
+          setApiErrors(error.errors.reasons);
+        }
         setStatus("error");
         setTimeout(() => {
           setStatus("idling");
@@ -179,7 +191,12 @@ export default function RegistrationForm() {
           },
         }}
       />
-      <ProgressButton type="submit" label="Envoyer" status={status} />
+      <ProgressButton
+        type="submit"
+        label="Envoyer"
+        status={status}
+        errorMessages={apiErrors}
+      />
     </Box>
   );
 }
