@@ -2,8 +2,6 @@ import { Box, Button, Typography } from "@mui/material";
 import useCurrentUser from "../../../../../common/hooks/useCurrentUser";
 import { removeLocalStorageItem } from "../../../../../common/services/localStorage";
 
-import classes from "./styles.module.scss";
-
 export default function LoggedInSection() {
   const { currentUser, setCurrentUser } = useCurrentUser();
 

@@ -7,7 +7,7 @@ import RestaurantDetails from "../Restaurants/RestaurantCard/RestaurantDetails";
 
 export default function Body() {
   return (
-    <Container disableGutters>
+    <Container disableGutters sx={{ display: "flex", flexDirection: "column" }}>
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="registration" element={<Registration />} />

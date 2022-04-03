@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 import { useQuery } from "react-query";
 import { RestaurantReadDto } from "../../../common/models/Restaurant";
@@ -15,10 +16,10 @@ export default function Restaurants() {
   });
 
   return (
-    <div className={classes.wrapper}>
+    <Box className={classes.wrapper}>
       {restaurants.map((restaurant) => (
         <RestaurantCard key={restaurant.id} restaurant={restaurant} />
       ))}
-    </div>
+    </Box>
   );
 }
