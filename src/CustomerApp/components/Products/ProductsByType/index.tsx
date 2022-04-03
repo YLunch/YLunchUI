@@ -1,15 +1,15 @@
-import { ProductReadDto, ProductType } from "../../../../models/Product";
+import { ProductReadDto } from "../../../../models/Product";
 import Product from "../Product";
 
 type Props = {
-  productType: ProductType;
+  title: string;
   products: ProductReadDto[];
 };
 
-export default function ProductsByType({ productType, products }: Props) {
+export default function ProductsByType({ title, products }: Props) {
   return (
     <div>
-      <p>section: {productType}</p>
+      <p>{title}</p>
       {products.map((product) => (
         <Product key={product.id} product={product} />
       ))}

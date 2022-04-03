@@ -4,8 +4,8 @@ import { parse } from "../JwtToken";
 import { getLocalStorageItem } from "../localStorage";
 import { refreshTokensApi } from "./authentication";
 
-export const apiUrl = "http://localhost:5254";
-// export const apiUrl = "https://ylunch-api.rael-calitro.ovh";
+// export const apiUrl = "http://localhost:5254";
+export const apiUrl = "https://ylunch-api.rael-calitro.ovh";
 
 type RestMethod = "post" | "get" | "patch" | "put" | "delete";
 
