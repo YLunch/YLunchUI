@@ -1,14 +1,14 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { RestaurantReadDto } from "../../../common/models/Restaurant";
-import { getRestaurants } from "../../services/api/restaurants";
+import { getRestaurantsApi } from "../../services/api/restaurants";
 import RestaurantCard from "./RestaurantCard";
 import classes from "./styles.module.scss";
 
 export default function Restaurants() {
   const [restaurants, setRestaurants] = React.useState<RestaurantReadDto[]>([]);
 
-  useQuery("restaurants", getRestaurants, {
+  useQuery("restaurants", getRestaurantsApi, {
     onSuccess: (response) => {
       setRestaurants(response);
     },

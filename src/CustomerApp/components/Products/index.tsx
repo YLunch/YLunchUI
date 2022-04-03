@@ -1,19 +1,31 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import { RestaurantReadDto } from "../../../common/models/Restaurant";
 import { ProductReadDto, ProductType } from "../../../models/Product";
-import { getProducts } from "../../../services/api/product";
+import { getProducts as getProductsApi } from "../../../services/api/product";
+import { getRestaurantByIdApi } from "../../services/api/restaurants";
 import ProductsByType from "./ProductsByType";
 
 export default function Products() {
   const urlParams = useParams();
+  const [restaurant, setRestaurant] = React.useState<RestaurantReadDto>();
   const [products, setProducts] = React.useState<ProductReadDto[]>([]);
 
   const restaurantId = urlParams.restaurantId;
 
-  useQuery("products", () => getProducts(restaurantId!), {
+  useQuery(
+    `restaurants/${restaurantId}`,
+    () => getRestaurantByIdApi(restaurantId!),
+    {
+      onSuccess: (response) => {
+        setRestaurant(response);
+      },
+    }
+  );
+
+  useQuery("products", () => getProductsApi(restaurantId!), {
     onSuccess: (response) => {
-      console.log(response);
       setProducts(response);
     },
   });
@@ -51,7 +63,7 @@ export default function Products() {
 
   return (
     <div>
-      <p>Products works</p>
+      <p>{restaurant?.name}</p>
       {classifiedProductsByType.starter.length > 0 && (
         <ProductsByType
           title="Entrées"
