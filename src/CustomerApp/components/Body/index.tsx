@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../Login";
 import Registration from "../Registration";
 import Restaurants from "../Restaurants";
-import RestaurantDetails from "../Restaurants/RestaurantDetails";
+import RestaurantDetails from "../Restaurants/RestaurantCard/RestaurantDetails";
 
 export default function Body() {
   return (

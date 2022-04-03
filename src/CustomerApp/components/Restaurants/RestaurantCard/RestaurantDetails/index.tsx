@@ -2,9 +2,9 @@ import { Button } from "@mui/material";
 import React from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { RestaurantReadDto } from "../../../../common/models/Restaurant";
-import { getRestaurantByIdApi } from "../../../services/api/restaurants";
-import Products from "../../Products";
+import { RestaurantReadDto } from "../../../../../common/models/Restaurant";
+import { getRestaurantByIdApi } from "../../../../services/api/restaurants";
+import Products from "../../../Products";
 
 export default function RestaurantDetails() {
   const navigate = useNavigate();

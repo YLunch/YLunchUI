@@ -1,5 +1,5 @@
 import { ProductReadDto } from "../../../../models/Product";
-import Product from "../Product";
+import ProductCard from "./ProductCard";
 
 type Props = {
   title: string;
@@ -11,7 +11,7 @@ export default function ProductsByType({ title, products }: Props) {
     <div>
       <p>{title}</p>
       {products.map((product) => (
-        <Product key={product.id} product={product} />
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );
