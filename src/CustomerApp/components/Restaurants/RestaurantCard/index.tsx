@@ -8,7 +8,7 @@ type Props = {
 export default function RestaurantCard({ restaurant }: Props) {
   const navigate = useNavigate();
   function handleClick() {
-    navigate(`${restaurant.id}/products`);
+    navigate(`${restaurant.id}`);
   }
 
   return (

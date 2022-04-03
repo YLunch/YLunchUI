@@ -1,9 +1,9 @@
 import { Container } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "../Login";
-import Products from "../Products";
 import Registration from "../Registration";
 import Restaurants from "../Restaurants";
+import RestaurantDetails from "../Restaurants/RestaurantDetails";
 
 export default function Body() {
   return (
@@ -12,8 +12,8 @@ export default function Body() {
         <Route path="login" element={<Login />} />
         <Route path="registration" element={<Registration />} />
         <Route
-          path="restaurants/:restaurantId/products"
-          element={<Products />}
+          path="restaurants/:restaurantId"
+          element={<RestaurantDetails />}
         />
         <Route path="restaurants" element={<Restaurants />} />
       </Routes>
