@@ -15,11 +15,8 @@ import {
   ynovEmailRegExp,
 } from "../../../../common/constants/regexps";
 import { progressButtonRecoveryTimeout } from "../../../../common/constants/timeouts";
-import {
-  ApiError,
-  isApiStandardError,
-  isApiValidationError,
-} from "../../../../common/models/Common";
+import { ApiError } from "../../../../common/models/Common";
+import { translateApiErrors } from "../../../../common/services/api/translation";
 import { CustomerCreateDto } from "../../../models/Customer";
 import { addCustomerApi } from "../../../services/api/customers";
 
@@ -35,7 +32,7 @@ interface Inputs extends FieldValues {
 export default function RegistrationForm() {
   const navigate = useNavigate();
   const [status, setStatus] = React.useState<ProgressButtonStatus>("idling");
-  const [apiErrors, setApiErrors] = React.useState<string[]>([]);
+  const [apiErrors, setApiErrors] = React.useState<ApiError>();
   const {
     register,
     formState: { errors },
@@ -58,15 +55,9 @@ export default function RegistrationForm() {
           });
         }, progressButtonRecoveryTimeout);
       },
-      onError: (error: ApiError<CustomerCreateDto>) => {
-        if (isApiValidationError(error)) {
-          setApiErrors(
-            Object.entries(error.errors).map(([_, value]) => String(value))
-          );
-        }
-        if (isApiStandardError(error)) {
-          setApiErrors(error.errors.reasons);
-        }
+      onError: (error: ApiError) => {
+        setApiErrors(error);
+
         setStatus("error");
         setTimeout(() => {
           setStatus("idling");
@@ -185,7 +176,7 @@ export default function RegistrationForm() {
         rules={{
           required: "Ce champs est requis",
           validate: {
-            match: (value: any) =>
+            match: (value: string) =>
               value === getValues().password ||
               "Les mots doivent être identiques",
           },
@@ -193,7 +184,9 @@ export default function RegistrationForm() {
       />
       <ProgressButton type="submit" label="Envoyer" status={status} />
       {apiErrors && (
-        <Typography color="error">{apiErrors.join("\n")}</Typography>
+        <Typography color="error">
+          {translateApiErrors(apiErrors, "Utilisateur")}
+        </Typography>
       )}
     </Box>
   );

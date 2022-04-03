@@ -38,13 +38,11 @@ export async function getAuthorizedHeaders() {
   return headers;
 }
 
-export async function processResponse<TRequestDto, TResponseDto>(
-  response: Response
-) {
+export async function processResponse<TResponseDto>(response: Response) {
   const data = await response.json();
   if (response.ok) {
     return data as TResponseDto;
   }
-  const error = data as ApiError<TRequestDto>;
+  const error = data as ApiError;
   throw error;
 }

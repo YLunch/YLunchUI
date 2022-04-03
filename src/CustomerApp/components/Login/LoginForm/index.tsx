@@ -42,7 +42,7 @@ export default function LoginForm() {
         navigate("/customer/");
       }, progressButtonRecoveryTimeout);
     },
-    onError: (_: ApiError<LoginRequestDto>) => {
+    onError: (_: ApiError) => {
       setCurrentUser(undefined);
       setStatus("error");
       setTimeout(() => {

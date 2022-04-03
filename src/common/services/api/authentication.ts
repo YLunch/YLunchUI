@@ -24,15 +24,12 @@ export async function loginApi(login: LoginRequestDto): Promise<void> {
     headers: getAnonymousHeaders(),
     body: JSON.stringify(login),
   })
-    .then(
-      async (response) =>
-        await processResponse<LoginRequestDto, TokenReadDto>(response)
-    )
+    .then(async (response) => await processResponse<TokenReadDto>(response))
     .then((data: TokenReadDto) => {
       setLocalStorageItem("accessToken", data.accessToken);
       setLocalStorageItem("refreshToken", data.refreshToken);
     })
-    .catch((error: ApiError<LoginRequestDto>) => {
+    .catch((error: ApiError) => {
       removeLocalStorageItem("accessToken");
       removeLocalStorageItem("refreshToken");
       throw error;
@@ -53,15 +50,12 @@ export async function refreshTokensApi(): Promise<void> {
     headers: getAnonymousHeaders(),
     body: JSON.stringify(body),
   })
-    .then(
-      async (response) =>
-        await processResponse<RefreshTokensRequestDto, TokenReadDto>(response)
-    )
+    .then(async (response) => await processResponse<TokenReadDto>(response))
     .then((data: TokenReadDto) => {
       setLocalStorageItem("accessToken", data.accessToken);
       setLocalStorageItem("refreshToken", data.refreshToken);
     })
-    .catch((error: ApiError<RefreshTokensRequestDto>) => {
+    .catch((error: ApiError) => {
       removeLocalStorageItem("accessToken");
       removeLocalStorageItem("refreshToken");
       throw error;
