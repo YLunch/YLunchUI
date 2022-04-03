@@ -7,7 +7,7 @@ import RestaurantDetails from "../Restaurants/RestaurantCard/RestaurantDetails";
 
 export default function Body() {
   return (
-    <Container maxWidth="lg">
+    <Container disableGutters>
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="registration" element={<Registration />} />

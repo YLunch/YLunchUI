@@ -2,3 +2,12 @@
   display: flex;
   flex-direction: column;
 }
+
+.wrapper:nth-child(n) {
+  cursor: pointer;
+  background-color: lightyellow;
+}
+
+.wrapper:nth-child(2n) {
+  background-color: aliceblue;
+}
