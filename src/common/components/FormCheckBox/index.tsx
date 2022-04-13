@@ -7,6 +7,7 @@ type FieldData<T extends FieldValues> = {
   rules: {};
   register: UseFormRegister<T>;
   label: string;
+  initialValue?: boolean;
 
 };
 
@@ -14,7 +15,8 @@ export default function FormCheckBox<T extends FieldValues>({
   name,
   rules,
   register,
-  label
+  label,
+  initialValue = false,
 }: FieldData<T>) {
   return (
     <FormControlLabel
@@ -23,6 +25,7 @@ export default function FormCheckBox<T extends FieldValues>({
           size="small"
           {...register(name, rules)}
           name={name}
+          checked={initialValue}
         />
       }
       label={label}
