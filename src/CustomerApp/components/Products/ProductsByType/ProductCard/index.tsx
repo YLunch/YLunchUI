@@ -18,7 +18,7 @@ export default function ProductCard({ product }: Props) {
     <Card>
       <CardMedia component="img" alt="icone ynov" height="140" />
       <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography gutterBottom variant="subtitle2" component="div">
+        <Typography mb={2} variant="subtitle2" component="div">
           {name}
           <Typography variant="body2">{description}</Typography>
         </Typography>
