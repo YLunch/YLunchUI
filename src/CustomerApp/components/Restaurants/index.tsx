@@ -16,7 +16,7 @@ export default function Restaurants() {
   });
 
   return (
-    <Box className={classes.wrapper}>
+    <Box component='div' className={classes.wrapper}>
       {restaurants.map((restaurant) => (
         <RestaurantCard key={restaurant.id} restaurant={restaurant} />
       ))}

@@ -15,7 +15,7 @@ type Props = {
 export default function ProductCard({ product }: Props) {
   const { name, description, price } = product;
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card>
       <CardMedia component="img" alt="icone ynov" height="140" />
       <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography gutterBottom variant="subtitle2" component="div">
