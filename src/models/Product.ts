@@ -2,14 +2,15 @@ export type ProductReadDto = {
   id: string;
   name: string;
   description: string;
-  price: 9.8;
-  quantity: 3;
+  price: number;
+  quantity: number;
   isActive: boolean;
   productType: ProductType;
-  expirationDateTime: DateConstructor;
+  // expirationDateTime: DateConstructor;
+  expirationDateTime: string;
   image: string;
   allergens: AllergenReadDto[];
-  productTags: ProductReadDto[];
+  productTags: ProductTagReadDto[];
 };
 
 export type AllergenReadDto = {
