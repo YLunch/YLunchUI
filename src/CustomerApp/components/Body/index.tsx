@@ -4,6 +4,7 @@ import Login from "../Login";
 import Registration from "../Registration";
 import Restaurants from "../Restaurants";
 import RestaurantDetails from "../Restaurants/RestaurantCard/RestaurantDetails";
+import ShoppingCart from "../ShoppingCart";
 
 export default function Body() {
   return (
@@ -16,6 +17,7 @@ export default function Body() {
           element={<RestaurantDetails />}
         />
         <Route path="restaurants" element={<Restaurants />} />
+        <Route path="cart" element={<ShoppingCart />} />
       </Routes>
     </Container>
   );
