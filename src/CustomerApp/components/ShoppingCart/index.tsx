@@ -1,20 +1,10 @@
-import { useState } from "react";
-import { ProductReadDto } from "../../../models/Product";
-import {
-  addProductToShoppingCart,
-  clearShoppingCart,
-  getShoppingCart,
-  removeProductFromShoppingCart,
-} from "../../services/shoppingCart";
-import { ShoppingCartType } from "../../services/shoppingCart/types";
+import useCart from "../../services/cart/useCart";
+import { formatCart } from "../../services/cart/helpers";
 
 export default function ShoppingCart() {
-  const [shoppingCart, setShoppingCart] = useState<ShoppingCartType>(
-    getShoppingCart()
-  );
 
   const p = {
-    id: "a00000e0-aaa0-000a-0000-00e00aa00e00",
+    id: "a00000e0-aaa0-000a-0000-00e00aa00e02",
     restaurantId: "a00000e0-aaa0-000a-0000-00e00aa00e00",
     name: "my product",
     description: "my ingredients",
@@ -39,27 +29,13 @@ export default function ShoppingCart() {
     ],
   };
 
-  const handleAdd = (product: ProductReadDto) => {
-    addProductToShoppingCart(product);
-    setShoppingCart(getShoppingCart());
-  };
-
-  const handleRemove = (product: ProductReadDto) => {
-    removeProductFromShoppingCart(product);
-    setShoppingCart(getShoppingCart());
-  };
-
-  const handleClear = () => {
-    clearShoppingCart();
-    setShoppingCart(getShoppingCart());
-  };
+  const { cart, addProduct, removeOneProduct } = useCart();
 
   return (
     <div>
-      <button onClick={() => handleClear()}>clear</button>
-      <button onClick={() => handleRemove(p)}>remove</button>
-      {shoppingCart.length}
-      <button onClick={() => handleAdd(p)}>add</button>
+      <button onClick={() => console.log(formatCart(cart))}>clear</button>
+      <button onClick={() => removeOneProduct(p)}>remove</button>
+      <button onClick={() => addProduct(p)}>add</button>
     </div>
   );
 }

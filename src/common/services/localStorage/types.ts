@@ -1,1 +1,1 @@
-export type LocalStorageItem = "accessToken" | "refreshToken" | "shoppingCart";
+export type LocalStorageItem = "accessToken" | "refreshToken" | "cart";
