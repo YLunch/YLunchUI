@@ -1,54 +1,32 @@
-import { getLocalStorageItem, setLocalStorageItem } from "../../../common/services/localStorage";
-import { CartItem } from "./CartItem.class";
-import { Buyable } from "./buyable.interface";
+import { ProductReadDto } from "../../../models/Product";
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+} from "../../../common/services/localStorage";
+import { ShoppingCartType } from "./types";
 
-const emptyShoppingCart: CartItem[] = [];
+const emptyShoppingCart: ShoppingCartType = [];
 
-const findProductInShoppingCart = (product: Buyable): CartItem | undefined => {
-  const shoppingCart = getShoppingCart();
-  return shoppingCart.find((item) => item.id === product.id);
-};
-
-const pesistShoppingCart = (shoppingCart: CartItem[]) => {
+const pesistShoppingCart = (shoppingCart: ShoppingCartType) => {
   setLocalStorageItem("shoppingCart", JSON.stringify(shoppingCart));
-  console.log(getShoppingCart());
 };
 
-const insertCartItem = (item: CartItem) => {
-  const shoppingCart = getShoppingCart();
-  shoppingCart.push(item);
-  pesistShoppingCart(shoppingCart);
-};
-
-const updateCartItem = (item: CartItem, qty: number) => {
-  const shoppingCart = getShoppingCart();
-  item.qty = qty;
-  pesistShoppingCart(shoppingCart);
-};
-
-const deleteCartItem = (item: CartItem) => {
-  const shoppingCart = getShoppingCart();
-  const productIndex = shoppingCart.indexOf(item);
-  if (productIndex > -1) shoppingCart.splice(productIndex, 1);
-  pesistShoppingCart(shoppingCart);
-};
-
-export function getShoppingCart(): CartItem[] {
+export function getShoppingCart(): ShoppingCartType {
   const found = getLocalStorageItem("shoppingCart");
   return found ? JSON.parse(found) : emptyShoppingCart;
 }
 
-export function addProductToShoppingCart(product: Buyable, qty: number = 1) {
-  const item = findProductInShoppingCart(product);
-  item === undefined
-    ? insertCartItem(new CartItem(product.id, product.name, product.price, qty))
-    : updateCartItem(item, item.qty + qty);
+export function addProductToShoppingCart(product: ProductReadDto) {
+  const shoppingCart = getShoppingCart();
+  shoppingCart.push(product.id);
+  pesistShoppingCart(shoppingCart);
 }
 
-export function substractProductFromShoppingCart(product: Buyable, qty: number = 1) {
-  const item = findProductInShoppingCart(product);
-  if (item === undefined) return;
-  item.qty - qty > 0 ? updateCartItem(item, item.qty - qty) : deleteCartItem(item);
+export function removeProductFromShoppingCart(product: ProductReadDto) {
+  const shoppingCart = getShoppingCart();
+  const productIndex = shoppingCart.indexOf(product.id);
+  if (productIndex > -1) shoppingCart.splice(productIndex, 1);
+  pesistShoppingCart(shoppingCart);
 }
 
 export function clearShoppingCart() {

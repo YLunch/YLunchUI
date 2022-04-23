@@ -1,18 +1,15 @@
-import { Typography } from "@mui/material";
-import { Box } from "@mui/system";
 import { useState } from "react";
 import { ProductReadDto } from "../../../models/Product";
 import {
   addProductToShoppingCart,
   clearShoppingCart,
   getShoppingCart,
-  substractProductFromShoppingCart,
+  removeProductFromShoppingCart,
 } from "../../services/shoppingCart";
-import { CartItem } from "../../services/shoppingCart/CartItem.class";
-import ShoppingItem from "./ShoppingItem";
+import { ShoppingCartType } from "../../services/shoppingCart/types";
 
 export default function ShoppingCart() {
-  const [shoppingCart, setShoppingCart] = useState<CartItem[]>(
+  const [shoppingCart, setShoppingCart] = useState<ShoppingCartType>(
     getShoppingCart()
   );
 
@@ -48,7 +45,7 @@ export default function ShoppingCart() {
   };
 
   const handleRemove = (product: ProductReadDto) => {
-    substractProductFromShoppingCart(product);
+    removeProductFromShoppingCart(product);
     setShoppingCart(getShoppingCart());
   };
 
@@ -58,17 +55,11 @@ export default function ShoppingCart() {
   };
 
   return (
-    <>
-      <Typography gutterBottom variant="h2" component="h1">Votre commande</Typography>
-      <Box sx={{
-          minHeight: "50vh",
-          display: "flex",
-          flexDirection: "column"
-        }}>
-        {shoppingCart.length > 0 
-        ? shoppingCart.map((item) => <ShoppingItem item={item} />)
-        : <Typography variant="h4" sx={{margin: "auto"}} component="p">Votre panier est vide...</Typography>}
-      </Box>
-    </>
+    <div>
+      <button onClick={() => handleClear()}>clear</button>
+      <button onClick={() => handleRemove(p)}>remove</button>
+      {shoppingCart.length}
+      <button onClick={() => handleAdd(p)}>add</button>
+    </div>
   );
 }
