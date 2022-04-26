@@ -6,21 +6,33 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
-import { ProductReadDto } from "../../../../../models/Product";
+import {AllergenReadDto, ProductReadDto} from "../../../../../models/Product";
+import React from "react";
+import imgdefault from "./img-product.png";
+
 
 type Props = {
   product: ProductReadDto;
 };
 
-export default function ProductCard({ product }: Props) {
-  const { name, description, price } = product;
+export default function ProductCard({ product}: Props) {
+
+  const { name, image, description, price, allergens} = product;
+
+  // @ts-ignore
   return (
     <Card>
-      <CardMedia component="img" alt="icone ynov" height="140" />
-      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
+        <CardMedia component="img"  src={image!==null ? image : imgdefault} alt="icone ynov" height="140"/>
+        <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography mb={2} variant="subtitle2" component="div">
           {name}
           <Typography variant="body2">{description}</Typography>
+          {allergens.map((allergen) => (
+
+              <Typography key={allergen.id}>{allergen.name}</Typography>
+
+          ))}
+
         </Typography>
         <Typography variant="subtitle2" component="p">
           {price}
@@ -29,7 +41,7 @@ export default function ProductCard({ product }: Props) {
       <CardActions sx={{ float: "right" }}>
         <Button variant="contained" size="small" sx={{ textTransform: "none" }}>
           {" "}
-          Voir plus
+          Réserver
         </Button>
       </CardActions>
     </Card>

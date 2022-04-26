@@ -1,4 +1,4 @@
-import { ProductReadDto } from "../../../../models/Product";
+import {AllergenReadDto, ProductReadDto} from "../../../../models/Product";
 import ProductCard from "./ProductCard";
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
@@ -8,7 +8,7 @@ type Props = {
   products: ProductReadDto[];
 };
 
-export default function ProductsByType({ title, products }: Props) {
+export default function ProductsByType({ title, products}: Props) {
   return (
     <>
       <Box sx={{ p: 2, backgroundColor: "blue" }}>
