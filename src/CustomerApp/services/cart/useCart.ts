@@ -1,10 +1,13 @@
 import { ProductReadDto } from "../../../models/Product";
-import { getLocalStorageItem, setLocalStorageItem } from "../../../common/services/localStorage";
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+} from "../../../common/services/localStorage";
 import { Cart } from "./types";
 import { useEffect, useState } from "react";
 
-const useCart = () => {
-  const emptyCart: Cart = [];
+const useCart = (restaurantId: string) => {
+  const emptyCart: Cart = { productIds: [], restaurantId };
 
   const init = (): Cart => {
     const found = getLocalStorageItem("cart");
@@ -14,19 +17,22 @@ const useCart = () => {
   const [cart, setCart] = useState(init());
 
   const addProduct = (product: ProductReadDto) => {
-    const newCart = [...cart, product.id];
+    const productIds = [...cart.productIds, product.id];
+    const newCart = { productIds, restaurantId };
     setCart(newCart);
   };
 
-  const removeOneProduct = (product: ProductReadDto) => {
-    const newCart = [...cart];
-    const index = newCart.indexOf(product.id);
-    newCart.splice(index, 1);
+  const removeProduct = (product: ProductReadDto) => {
+    const productIds = [...cart.productIds];
+    const index = productIds.indexOf(product.id);
+    productIds.splice(index, 1);
+    const newCart = { productIds, restaurantId };
     setCart(newCart);
   };
 
-  const removeAllProduct = (product: ProductReadDto) => {
-    const newCart = cart.filter((item) => item !== product.id);
+  const removeAllProducts = (product: ProductReadDto) => {
+    const productIds = cart.productIds.filter((item) => item !== product.id);
+    const newCart = { productIds, restaurantId };
     setCart(newCart);
   };
 
@@ -42,7 +48,14 @@ const useCart = () => {
     pesist();
   }, [cart]);
 
-  return { cart, addProduct, removeOneProduct, removeAllProduct, clear };
+  return {
+    cart,
+    addProduct,
+    removeProduct,
+    removeAllProducts,
+    clear,
+    restaurantId,
+  };
 };
 
 export default useCart;
