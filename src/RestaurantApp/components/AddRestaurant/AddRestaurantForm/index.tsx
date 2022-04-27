@@ -16,13 +16,11 @@ import {
   progressButtonSuccessRecoveryTimeout,
 } from "../../../../common/constants/timeouts";
 import useCurrentUser from "../../../../common/hooks/useCurrentUser";
-import { LoginRequestDto } from "../../../../common/models/Authentication";
 import { ApiError } from "../../../../common/models/Common";
 import {getCurrentUserApi } from "../../../../common/services/api/authentication";
 import FormInputFile from "../../../../common/components/FormInputFile";
 import {RestaurantCreateDto} from "../../../models/Restaurant";
 import {createRestaurant} from "../../../services/api/restaurantService";
-import BasicDateTimePicker from "../../../../common/components/DatePicker";
 import BasicDatePicker from "../../../../common/components/DatePicker";
 
 interface Inputs extends FieldValues {
@@ -49,6 +47,13 @@ interface Inputs extends FieldValues {
       DurationInMinutes: number;
     }
   ],
+  // décalage depuis miniuit
+  // offsetinmuinites + durationinminutes
+
+  // 10h 00
+  // offestima 600 minute
+  //
+
   orderOpeningTimes: [
     {
       dayOfWeek: number;
@@ -102,8 +107,9 @@ export default function AddRestaurantForm() {
   });
 
   const submit = (data: RestaurantCreateDto) => {
-    setStatus("loading");
-    mutation.mutate(data);
+    console.log(data)
+   // setStatus("loading");
+   // mutation.mutate(data);
   };
 
   return (
@@ -170,14 +176,7 @@ export default function AddRestaurantForm() {
         name="isOpen"
         label="Le restaurant est-il ouvert aux horaires habituels ?"
         initialValue={true}
-        rules={{
-          required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
-        }}
+        rules={{}}
       />
 
       <FormCheckBox
@@ -185,14 +184,7 @@ export default function AddRestaurantForm() {
         name="isPublic"
         label="Le restaurant doit-il être visible sur la plateforme ?"
         initialValue={true}
-        rules={{
-          required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
-        }}
+        rules={{}}
       />
 
       <FormInput
@@ -201,12 +193,7 @@ export default function AddRestaurantForm() {
         label="Pays  *"
         name="country"
         rules={{
-          required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le pays ne doit pas être null",
-          },
+          required: "Ce champs est requis"
         }}
       />
 
@@ -217,11 +204,6 @@ export default function AddRestaurantForm() {
         name="city"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "La ville  ne doit pas être null",
-          },
         }}
       />
 
@@ -232,11 +214,6 @@ export default function AddRestaurantForm() {
         name="streetNumber"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le numero de l'addres  ne doit pas être null",
-          },
         }}
       />
 
@@ -247,21 +224,15 @@ export default function AddRestaurantForm() {
         name="streetName"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "L ' adresse   ne doit pas être null",
-          },
         }}
       />
 
       <FormInput
         register={register}
         errors={errors}
-        label="complément d'adresse  *"
+        label="complément d'adresse"
         name="addressExtraInformation"
         rules={{
-          required: "Ce champs est requis",
         }}
       />
 
@@ -273,11 +244,6 @@ export default function AddRestaurantForm() {
         type="file"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
         }}
       />
 
@@ -290,11 +256,6 @@ export default function AddRestaurantForm() {
         type="file"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
         }}
       />
 
@@ -302,14 +263,9 @@ export default function AddRestaurantForm() {
       <FormSelect
         register={register}
         label="Jours  *"
-        name="day"
+        name="placeOpeningTimes.dayOfWeek"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
         }}
         value=""
         options={[
@@ -331,11 +287,6 @@ export default function AddRestaurantForm() {
         name="hours "
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
         }}
         value=""
         options ={getHourOptions()}
@@ -347,14 +298,9 @@ export default function AddRestaurantForm() {
       <FormSelect
         register={register}
         label="minute   *"
-        name="minutes"
+        name="OffsetInMinutes"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
         }}
         value=""
         options = {getMinuteOptions()}
@@ -365,14 +311,9 @@ export default function AddRestaurantForm() {
       <FormSelect
         register={register}
         label="Jours  *"
-        name="day"
+        name="orderOpeningTimes.dayOfWeek"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
         }}
         value=""
         options={[
@@ -394,11 +335,6 @@ export default function AddRestaurantForm() {
         name="hours "
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
         }}
         value=""
         options ={getHourOptions()}
@@ -414,11 +350,6 @@ export default function AddRestaurantForm() {
         name="minutes"
         rules={{
           required: "Ce champs est requis",
-          pattern: {
-            value: ynovEmailRegExp,
-            message:
-              "Le nom ne doit pas être null",
-          },
         }}
         value=""
         options = {getMinuteOptions()}
