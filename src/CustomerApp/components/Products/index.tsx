@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
-import {AllergenReadDto, ProductReadDto, ProductType} from "../../../models/Product";
+import { ProductReadDto, ProductType } from "../../../models/Product";
 import { getProducts as getProductsApi } from "../../../services/api/product";
 import ProductsByType from "./ProductsByType";
 
@@ -16,8 +16,6 @@ export default function Products({ restaurantId }: Props) {
       setProducts(response);
     },
   });
-
-
 
   if (!restaurantId) {
     return <></>;
