@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import Login from "../Login";
 import Registration from "../Registration";
@@ -8,7 +8,7 @@ import ShoppingCart from "../ShoppingCart";
 
 export default function Body() {
   return (
-    <Container disableGutters sx={{ display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="cart" element={<ShoppingCart />} />
@@ -19,6 +19,6 @@ export default function Body() {
         />
         <Route path="restaurants" element={<Restaurants />} />
       </Routes>
-    </Container>
+    </Box>
   );
 }
