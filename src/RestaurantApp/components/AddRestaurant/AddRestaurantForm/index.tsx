@@ -122,7 +122,7 @@ export default function AddRestaurantForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="nom du restaurant *"
+        label="Nom du restaurant *"
         name="name"
         rules={{
           required: "Ce champs est requis",
@@ -137,7 +137,7 @@ export default function AddRestaurantForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="numéro de téléphone  *"
+        label="Numéro de téléphone  *"
         name="phoneNumber"
         rules={{
           required: "Ce champs est requis",
@@ -152,7 +152,7 @@ export default function AddRestaurantForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="email du restaurant *"
+        label="Email du restaurant *"
         name="email"
         rules={{
           required: "Ce champs est requis",
@@ -192,7 +192,7 @@ export default function AddRestaurantForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="ville  du restaurant *"
+        label="Ville du restaurant *"
         name="city"
         rules={{
           required: "Ce champs est requis",
@@ -202,7 +202,7 @@ export default function AddRestaurantForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="numero de l'addres  *"
+        label="Numéro d'addresse *"
         name="streetNumber"
         rules={{
           required: "Ce champs est requis",
@@ -212,7 +212,7 @@ export default function AddRestaurantForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="adresse  *"
+        label="Adresse  *"
         name="streetName"
         rules={{
           required: "Ce champs est requis",
@@ -222,7 +222,7 @@ export default function AddRestaurantForm() {
       <FormInput
         register={register}
         errors={errors}
-        label="complément d'adresse"
+        label="Complément d'adresse"
         name="addressExtraInformation"
         rules={{
         }}
@@ -231,7 +231,7 @@ export default function AddRestaurantForm() {
       <FormInputFile
         register={register}
         errors={errors}
-        label="Selectionner une image*"
+        label="Sélectionner une image*"
         name="img"
         type="file"
         rules={{
@@ -243,7 +243,7 @@ export default function AddRestaurantForm() {
       <FormInputFile
         register={register}
         errors={errors}
-        label="Selectionner un logo *"
+        label="Sélectionner un logo *"
         name="logo"
         type="file"
         rules={{
@@ -261,13 +261,13 @@ export default function AddRestaurantForm() {
         }}
         value=""
         options={[
-          { value: "1", label: "lundi" },
-          { value: "2", label: "mardi" },
-          { value: "3", label: "mercredi" },
-          { value: "4", label: "jeudi" },
-          { value: "5", label: "vendredi" },
-          { value: "6", label: "samedi" },
-          { value: "7", label: "dimanche" },
+          { value: "1", label: "Lundi" },
+          { value: "2", label: "Mardi" },
+          { value: "3", label: "Mercredi" },
+          { value: "4", label: "Jeudi" },
+          { value: "5", label: "Vendredi" },
+          { value: "6", label: "Samedi" },
+          { value: "7", label: "Dimanche" },
         ]}
 
         />
@@ -275,7 +275,7 @@ export default function AddRestaurantForm() {
 
       <FormSelect
         register={register}
-        label="heure   *"
+        label="Heure *"
         name="hours "
         rules={{
           required: "Ce champs est requis",
@@ -289,7 +289,7 @@ export default function AddRestaurantForm() {
 
       <FormSelect
         register={register}
-        label="minute   *"
+        label="Minute *"
         name="OffsetInMinutes"
         rules={{
           required: "Ce champs est requis",
@@ -302,20 +302,20 @@ export default function AddRestaurantForm() {
       <p>orderOpeningTimes</p>
       <FormSelect
         register={register}
-        label="Jours  *"
+        label="Jours *"
         name="orderOpeningTimes.dayOfWeek"
         rules={{
           required: "Ce champs est requis",
         }}
         value=""
         options={[
-          { value: "1", label: "lundi" },
-          { value: "2", label: "mardi" },
-          { value: "3", label: "mercredi" },
-          { value: "4", label: "jeudi" },
-          { value: "5", label: "vendredi" },
-          { value: "6", label: "samedi" },
-          { value: "7", label: "dimanche" },
+          { value: "1", label: "Lundi" },
+          { value: "2", label: "Mardi" },
+          { value: "3", label: "Mercredi" },
+          { value: "4", label: "Jeudi" },
+          { value: "5", label: "Vendredi" },
+          { value: "6", label: "Samedi" },
+          { value: "7", label: "Dimanche" },
         ]}
 
         />
@@ -338,7 +338,7 @@ export default function AddRestaurantForm() {
 
       <FormSelect
         register={register}
-        label="minute   *"
+        label="minute *"
         name="minutes"
         rules={{
           required: "Ce champs est requis",
