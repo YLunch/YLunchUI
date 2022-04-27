@@ -47,13 +47,6 @@ interface Inputs extends FieldValues {
       DurationInMinutes: number;
     }
   ],
-  // décalage depuis miniuit
-  // offsetinmuinites + durationinminutes
-
-  // 10h 00
-  // offestima 600 minute
-  //
-
   orderOpeningTimes: [
     {
       dayOfWeek: number;
@@ -88,6 +81,7 @@ export default function AddRestaurantForm() {
   const { register,formState: { errors }, handleSubmit } = useForm<Inputs>({ mode: "onBlur" });
   const { setCurrentUser } = useCurrentUser();
 
+  let isOpen = true;
   const mutation = useMutation((data: RestaurantCreateDto) => createRestaurant(data), {
     onSuccess: async () => {
       setCurrentUser(await getCurrentUserApi());
@@ -175,7 +169,6 @@ export default function AddRestaurantForm() {
         register={register}
         name="isOpen"
         label="Le restaurant est-il ouvert aux horaires habituels ?"
-        initialValue={true}
         rules={{}}
       />
 
@@ -183,7 +176,6 @@ export default function AddRestaurantForm() {
         register={register}
         name="isPublic"
         label="Le restaurant doit-il être visible sur la plateforme ?"
-        initialValue={true}
         rules={{}}
       />
 
