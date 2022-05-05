@@ -82,49 +82,44 @@ function useCart() {
     mutation.mutateAsync();
   }
 
-  // function removeProduct(product: ProductReadDto) {
-  //   return getCartFromLocalStorage().filter((cartProduct) => {
-  //     let notFound = true;
-  //     if (cartProduct.product.id === product.id && notFound) {
-  //       notFound = false;
-  //       return false;
-  //     }
-  //     return true;
-  //   });
-  // }
+  function removeProduct(product: ProductReadDto) {
+    const cartFromLocalStorage = getCartFromLocalStorage();
+    const cartItemOfProduct = cartFromLocalStorage.items.find(
+      (item) =>
+        item.product.id === product.id &&
+        cartFromLocalStorage.restaurantId === product.restaurantId
+    );
+    if (!cartItemOfProduct) {
+      return;
+    }
+    cartItemOfProduct.quantity--;
 
-  // function removeProductGroup(product: ProductReadDto) {
-  //   return getCartFromLocalStorage().filter(
-  //     (cartProduct) => cartProduct.product.id !== product.id
-  //   );
-  // }
+    if (cartItemOfProduct.quantity === 0) {
+      setLocalStorageItem(
+        "cart",
+        JSON.stringify({
+          restaurantId: cartFromLocalStorage.restaurantId,
+          items: cartFromLocalStorage.items.filter(
+            (item) => item.product.id !== product.id
+          ),
+        })
+      );
+    } else {
+      setLocalStorageItem("cart", JSON.stringify(cartFromLocalStorage));
+    }
+
+    mutation.mutateAsync();
+  }
 
   function clear() {
     setLocalStorageItem("cart", JSON.stringify(initialCart));
     setCart(initialCart);
   }
 
-  // useQuery(
-  //   "cart",
-  //   () => {
-  //     const products = getProducts();
-  //     return getProductsApi(
-  //       products[0].restaurantId,
-  //       getProducts().map((product) => product.id)
-  //     );
-  //   },
-  //   {
-  //     onSuccess: (response) => {
-  //       // setCart(response);
-  //     },
-  //   }
-  // );
-
   return {
     cart,
     addProduct,
-    // removeProduct,
-    // removeProductGroup,
+    removeProduct,
     clear,
   };
 }
