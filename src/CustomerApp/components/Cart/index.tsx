@@ -2,6 +2,9 @@ import { Button, Typography } from "@mui/material";
 import useCart from "../../hooks/useCart";
 import CartItem from "./CartItem";
 import { GoBackButton } from "../../../common/components/GoBackButton";
+import { Box } from "@mui/system";
+import { addOrderApi } from "../../services/api/orders";
+import { addMinutes } from "date-fns";
 
 export default function Cart() {
   const { clear, cart, addProduct } = useCart();
@@ -12,7 +15,7 @@ export default function Cart() {
   }, 0);
 
   return (
-    <div>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <GoBackButton />
       {cart.items.map((cartItem) => (
         <CartItem
@@ -25,9 +28,26 @@ export default function Cart() {
       {!!totalPrice && (
         <Typography>{`${totalPrice.toFixed(2)}`.padStart(2, "0")}</Typography>
       )}
-      <Button variant="outlined" onClick={() => clear()}>
-        clear
+      <Button
+        sx={{ marginTop: "10px" }}
+        variant="outlined"
+        onClick={() => clear()}
+      >
+        Supprimer le panier
       </Button>
-    </div>
+      <Button
+        sx={{ marginTop: "10px" }}
+        variant="outlined"
+        onClick={async () =>
+          await addOrderApi(cart.restaurantId, {
+            productIds: cart.items.map((item) => item.product.id),
+            customerComment: "",
+            reservedForDateTime: addMinutes(new Date(), 1),
+          })
+        }
+      >
+        Confirmer la réservation
+      </Button>
+    </Box>
   );
 }

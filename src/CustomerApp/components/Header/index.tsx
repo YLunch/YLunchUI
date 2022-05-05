@@ -1,13 +1,12 @@
 import { Box, Button } from "@mui/material";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useCurrentUser from "../../../common/hooks/useCurrentUser";
-import LoggedOutSection from "./components/LoggedOutSection";
-import LoggedInSection from "./components/LoggedInSection";
-import logo from "./ylunch-logo.png";
-import React from "react";
 import { getCurrentUserApi } from "../../../common/services/api/authentication";
 import { getLocalStorageItem } from "../../../common/services/localStorage";
-import Cart from "../Cart";
+import LoggedInSection from "./components/LoggedInSection";
+import LoggedOutSection from "./components/LoggedOutSection";
+import logo from "./ylunch-logo.png";
 
 export default function Header() {
   const { currentUser, setCurrentUser } = useCurrentUser();

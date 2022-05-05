@@ -7,8 +7,7 @@ export type ProductReadDto = {
   quantity: number;
   isActive: boolean;
   productType: ProductType;
-  // expirationDateTime: DateConstructor;
-  expirationDateTime: string;
+  expirationDateTime: Date;
   image: string;
   allergens: AllergenReadDto[];
   productTags: ProductTagReadDto[];
