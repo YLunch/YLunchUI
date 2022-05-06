@@ -1,23 +1,14 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import ProgressButton, {
-  ProgressButtonStatus,
-} from "../../../../../common/components/ProgressButton";
-import {
-  progressButtonErrorRecoveryTimeout,
-  progressButtonSuccessRecoveryTimeout,
-} from "../../../../../common/constants/timeouts";
+import ProgressButton from "../../../../../common/components/ProgressButton";
+import useAsyncAction from "../../../../../common/hooks/useAsyncAction";
 import useCurrentUser from "../../../../../common/hooks/useCurrentUser";
-import { ApiError } from "../../../../../common/models/Common";
 import { logoutApi } from "../../../../../common/services/api/authentication";
-import { translateApiErrors } from "../../../../../common/services/api/translation";
 import { removeLocalStorageItem } from "../../../../../common/services/localStorage";
 
 export default function LoggedInSection() {
   const { currentUser, setCurrentUser } = useCurrentUser();
-  const [status, setStatus] = React.useState<ProgressButtonStatus>("idling");
-  const [apiErrors, setApiErrors] = React.useState<ApiError>();
+  const { actAsync, status } = useAsyncAction();
   const navigate = useNavigate();
 
   if (!currentUser) {
@@ -26,27 +17,20 @@ export default function LoggedInSection() {
 
   const { email } = currentUser;
 
-  async function handleLogout() {
-    setStatus("loading");
-    try {
-      await logoutApi();
-      setStatus("success");
-      setTimeout(() => {
-        setStatus("idling");
+  async function logout() {
+    await actAsync({
+      asyncAction: async () => await logoutApi(),
+      asyncSuccessTimeoutAction: async () => {
         removeLocalStorageItem("accessToken");
         removeLocalStorageItem("refreshToken");
         setCurrentUser(undefined);
-      }, progressButtonSuccessRecoveryTimeout);
-    } catch (error) {
-      setApiErrors(error as ApiError);
-      setStatus("error");
-      setTimeout(() => {
-        setStatus("idling");
+      },
+      asyncErrorTimeoutAction: async () => {
         removeLocalStorageItem("accessToken");
         removeLocalStorageItem("refreshToken");
         setCurrentUser(undefined);
-      }, progressButtonErrorRecoveryTimeout);
-    }
+      },
+    });
   }
 
   return (
@@ -58,16 +42,7 @@ export default function LoggedInSection() {
         {email}
       </Typography>
 
-      <ProgressButton
-        label="Déconnexion"
-        status={status}
-        onClick={handleLogout}
-      />
-      {apiErrors && (
-        <Typography color="error">
-          {translateApiErrors(apiErrors, "")}
-        </Typography>
-      )}
+      <ProgressButton label="Déconnexion" status={status} onClick={logout} />
     </Box>
   );
 }
