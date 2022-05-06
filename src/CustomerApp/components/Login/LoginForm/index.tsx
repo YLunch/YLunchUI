@@ -47,7 +47,7 @@ export default function LoginForm() {
   const submit = async (data: LoginRequestDto) => {
     await actAsync({
       asyncAction: async () => await mutation.mutateAsync(data),
-      asyncSuccessTimeoutAction: async () => navigate("/customer/restaurants"),
+      onSuccessTimeoutAsync: async () => navigate("/customer/restaurants"),
     });
   };
 

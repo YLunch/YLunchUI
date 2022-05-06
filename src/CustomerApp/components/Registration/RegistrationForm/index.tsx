@@ -50,7 +50,7 @@ export default function RegistrationForm() {
   async function submit(data: CustomerCreateDto) {
     await actAsync({
       asyncAction: async () => await mutation.mutateAsync(data),
-      asyncSuccessTimeoutAction: async () =>
+      onSuccessTimeoutAsync: async () =>
         navigate("/customer/login", {
           state: {
             message:

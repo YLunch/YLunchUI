@@ -1,17 +1,17 @@
+import React from "react";
 import {
   defaultErrorRecoveryTimeout,
   defaultSuccessRecoveryTimeout,
 } from "./../constants/timeouts";
-import React from "react";
 
 type AsyncActionStatus = "idling" | "loading" | "success" | "error";
 
 type ActParams = {
   asyncAction: () => Promise<unknown>;
-  asyncSuccessAction?: () => Promise<void>;
-  asyncSuccessTimeoutAction?: () => Promise<void>;
-  asyncErrorAction?: (error: unknown) => Promise<void>;
-  asyncErrorTimeoutAction?: () => Promise<void>;
+  onSuccessAsync?: () => Promise<void>;
+  onSuccessTimeoutAsync?: () => Promise<void>;
+  onErrorAsync?: (error: unknown) => Promise<void>;
+  onErrorTimeoutAsync?: () => Promise<void>;
   successRecoveryTimeout?: number;
   errorRecoveryTimeout?: number;
 };
@@ -21,10 +21,10 @@ function useAsyncAction() {
 
   async function actAsync({
     asyncAction,
-    asyncSuccessAction = async () => {},
-    asyncSuccessTimeoutAction = async () => {},
-    asyncErrorAction = async () => {},
-    asyncErrorTimeoutAction = async () => {},
+    onSuccessAsync = async () => {},
+    onSuccessTimeoutAsync = async () => {},
+    onErrorAsync = async () => {},
+    onErrorTimeoutAsync = async () => {},
     successRecoveryTimeout = defaultSuccessRecoveryTimeout,
     errorRecoveryTimeout = defaultErrorRecoveryTimeout,
   }: ActParams) {
@@ -32,17 +32,17 @@ function useAsyncAction() {
     try {
       await asyncAction();
       setStatus("success");
-      await asyncSuccessAction();
+      await onSuccessAsync();
       setTimeout(async () => {
         setStatus("idling");
-        await asyncSuccessTimeoutAction();
+        await onSuccessTimeoutAsync();
       }, successRecoveryTimeout);
     } catch (error) {
       setStatus("error");
-      await asyncErrorAction(error);
+      await onErrorAsync(error);
       setTimeout(async () => {
         setStatus("idling");
-        await asyncErrorTimeoutAction();
+        await onErrorTimeoutAsync();
       }, errorRecoveryTimeout);
     }
   }

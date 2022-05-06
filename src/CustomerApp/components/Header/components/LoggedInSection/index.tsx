@@ -20,12 +20,12 @@ export default function LoggedInSection() {
   async function logout() {
     await actAsync({
       asyncAction: async () => await logoutApi(),
-      asyncSuccessTimeoutAction: async () => {
+      onSuccessTimeoutAsync: async () => {
         removeLocalStorageItem("accessToken");
         removeLocalStorageItem("refreshToken");
         setCurrentUser(undefined);
       },
-      asyncErrorTimeoutAction: async () => {
+      onErrorTimeoutAsync: async () => {
         removeLocalStorageItem("accessToken");
         removeLocalStorageItem("refreshToken");
         setCurrentUser(undefined);
