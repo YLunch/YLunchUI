@@ -1,7 +1,8 @@
-import { OpeningTimeReadDto } from "../../../../../common/models/Restaurant";
+import { Typography } from "@mui/material";
+import { OpeningTimeReadDto } from "../../../../common/models/Restaurant";
 
 type Props = {
-  openingTime: OpeningTimeReadDto,
+  openingTime: OpeningTimeReadDto;
 };
 
 function getFormattedTime(minutes: number) {
@@ -14,9 +15,9 @@ export default function OpeningTime({ openingTime }: Props) {
   const { offsetInMinutes, durationInMinutes } = openingTime;
 
   return (
-    <>
-        de {getFormattedTime(offsetInMinutes)} à {" "}
+    <Typography mx={1}>
+      de {getFormattedTime(offsetInMinutes)} à{" "}
       {getFormattedTime(offsetInMinutes + durationInMinutes)}
-    </>
+    </Typography>
   );
 }
