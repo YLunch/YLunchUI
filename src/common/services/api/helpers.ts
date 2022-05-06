@@ -39,10 +39,14 @@ export async function getAuthorizedHeaders() {
 }
 
 export async function processResponse<TResponseDto>(response: Response) {
-  const data = await response.json();
-  if (response.ok) {
-    return data as TResponseDto;
+  if (response.status < 400) {
+    try {
+      const data = await response.json();
+      return data as TResponseDto;
+    } catch {
+      return {} as TResponseDto;
+    }
   }
-  const error = data as ApiError;
+  const error = (await response.json()) as ApiError;
   throw error;
 }
