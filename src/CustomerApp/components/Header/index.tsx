@@ -60,7 +60,7 @@ export default function Header() {
         <Button sx={{ marginRight: 1 }} onClick={() => navigate("cart")}>
           Panier{" "}
           <Box className={classes.cartIndicator}>
-            {cart.items.reduce((acc, cartItem) => acc + cartItem.quantity, 0)}
+            {cart?.items?.reduce((acc, cartItem) => acc + cartItem.quantity, 0)}
           </Box>
         </Button>
         {currentUser ? <LoggedInSection /> : <LoggedOutSection />}
